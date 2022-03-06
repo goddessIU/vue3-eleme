@@ -16,13 +16,7 @@
             </div>
         </div>
         <div class="recommend__stores">
-            <Store />
-            <Store />
-            <Store />
-            <Store />
-            <Store />
-            <Store />
-            <Store />
+            <Store v-for="(storeData, index) in store.storesData" :key="index" :store-data="storeData"/>
         </div>
     </div>
 </template>
@@ -58,6 +52,9 @@
 
 <script setup>
 import Store from './Store.vue';
+import { useStore } from '../store';
+
+const store = useStore()
 // import useSticky from '../hooks/useSticky';
 // import { onMounted, onUnmounted } from 'vue';
 

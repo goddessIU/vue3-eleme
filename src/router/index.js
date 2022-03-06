@@ -4,7 +4,13 @@ const router = createRouter({
   routes: [
     {
       path: '/',
+      name: 'index',
       component: () => import('../views/home/index.vue')
+    }, 
+    {
+      path: '/address',
+      name: 'address',
+      component: () => import('../views/address.vue')
     }
   ]
 })

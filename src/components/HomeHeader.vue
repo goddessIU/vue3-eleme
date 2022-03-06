@@ -1,11 +1,16 @@
 <template>
     <div class="head">
         <div class="headTop">
-            <div class="headTop__address">
+            <div class="headTop__address" @click="toAddress">
                 <svg class="icon headTop__address__icon" aria-hidden="true">
                     <use xlink:href="#icon-address" />
                 </svg>
-                北京丰台科技园
+                <div class="headTop__address__text">
+                    {{ store.addressData.address }}
+                </div>
+                <svg class="icon headTop__address__down" aria-hidden="true">
+                    <use xlink:href="#icon-down" />
+                </svg>
             </div>
             <div class="headTop__application">
                 <div class="headTop__shopCart">
@@ -30,7 +35,12 @@
 <script setup>
 import { onMounted, onUnmounted } from 'vue';
 import useSticky from '../hooks/useSticky.js'
+import { useStore } from '../store/index'
+import { useRouter } from 'vue-router';
 
+const store = useStore()
+
+//设置吸附功能
 const { useStickyEffect, isSticky } = useSticky('.headTop');
 
 onMounted(() => {
@@ -40,26 +50,45 @@ onUnmounted(() => {
     window.removeEventListener('scroll', useStickyEffect)
 })
 
+const router = useRouter()
+const toAddress = () => {
+    router.push({
+        name: 'address'
+    })
+}
+
 
 
 </script>
 
 <style lang="scss" scoped>
-@import '../style/config.scss';
-@import '../style/mixin.scss';
+@import "../style/config.scss";
+@import "../style/mixin.scss";
 .head {
     background-color: $commonColor;
     .headTop {
         @include displayFlex(center, space-between);
         .headTop__address {
+            color: #fff;
             width: 60vw;
             height: 2rem;
             font-size: 1.25rem;
             line-height: 2rem;
             font-weight: bold;
+            @include displayFlex();
+            
             .headTop__address__icon {
                 padding-top: 0.2rem;
                 font-size: 1.5rem;
+            }
+            .headTop__address__text {
+                @include ellipsis();
+                width: 45vw;
+            }
+            .headTop__address__down {
+                padding-top: 0.2rem;
+                font-size: 1.5rem;
+                color: #fff;
             }
         }
         .headTop__application {

@@ -1,16 +1,22 @@
 <template>
     <div class="store">
         <div class="store__img">
-            <img src="../assets/images/taocan.png" alt="" class="store__img__pic">
+            <img :src="storeData.image_path" class="store__img__pic" onerror="this.classList.add('store__img__onerror')">
         </div>
         <div class="store__intro">
-            <h1 class="store__title">chaoshi</h1>
-            <div class="store__rate">4.9 月售333单</div>
-            <div class="store__service">￥20起送| 满39配送 1.6km|30分钟</div>
-            <div class="store__activity">标超</div>
+            <h1 class="store__title">{{storeData.name}}</h1>
+            <div class="store__rate">几颗星：{{storeData.rating}} 月售{{storeData.recent_order_num}}单</div>
+            <div class="store__service">{{storeData.piecewise_agent_fee.tips}} {{storeData.distance}}|{{storeData.order_lead_time}}</div>
+            <div class="store__activity">
+                <span>活动</span>
+            </div>
         </div>
     </div>
 </template>
+
+<script setup>
+const props = defineProps(['storeData'])
+</script>
 
 <style scoped lang="scss">
 .store {
@@ -31,6 +37,10 @@
         img {
             width: 20vw;
             height: 20vw;
+        }
+        .store__img__onerror {
+            background: url(../assets/images/icon.png) no-repeat center;
+            background-size: contain;
         }
     }
     .store__intro {

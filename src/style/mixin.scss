@@ -1,4 +1,8 @@
-@mixin displayFlex($alignItems: center, $justifyContent: space-between,$flexDirection: row) {
+@mixin displayFlex(
+  $alignItems: center,
+  $justifyContent: space-between,
+  $flexDirection: row
+) {
   display: flex;
   align-items: $alignItems;
   justify-content: $justifyContent;
@@ -9,4 +13,10 @@
   position: fixed;
   top: $top;
   z-index: 1;
+}
+
+@mixin ellipsis() {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
