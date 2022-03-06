@@ -24,15 +24,13 @@
 </template>
 
 <style lang="scss" scoped>
+@import '../style/mixin.scss';
 .service {
-    display: flex;
+    @include displayFlex(center);
     height: 15vw;
     width: 100vw;
-    align-items: center;
     .service__item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+        @include displayFlex(center, center, column);
         width: 20vw;
         font-size: .75rem;
         .service__img {

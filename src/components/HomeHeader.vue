@@ -20,7 +20,7 @@
                 </div>
             </div>
         </div>
-        <div class="headSearch">
+        <div class="headSearch" :class="{ 'sticky': isSticky }">
             <input type="text" class="headSearch__input" placeholder="输入商家名称" />
             <button class="headSearch__button">搜索</button>
         </div>
@@ -28,21 +28,29 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, onUnmounted } from 'vue';
+import useSticky from '../hooks/useSticky.js'
+
+const { useStickyEffect, isSticky } = useSticky('.headTop');
 
 onMounted(() => {
-    const scrollHead = document.querySelector('.headTop')
-    console.log(scrollHead.clientHeight)
+    window.addEventListener('scroll', useStickyEffect)
 })
+onUnmounted(() => {
+    window.removeEventListener('scroll', useStickyEffect)
+})
+
+
+
 </script>
 
 <style lang="scss" scoped>
+@import '../style/config.scss';
+@import '../style/mixin.scss';
 .head {
-    background-color: #0085ff;
+    background-color: $commonColor;
     .headTop {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+        @include displayFlex(center, space-between);
         .headTop__address {
             width: 60vw;
             height: 2rem;
@@ -56,9 +64,7 @@ onMounted(() => {
         }
         .headTop__application {
             width: 20vw;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
+            @include displayFlex(center, space-around);
             .headTop__shopCart {
                 font-size: 1.25rem;
             }
@@ -67,26 +73,31 @@ onMounted(() => {
             }
         }
     }
+
     .headSearch {
         height: 2rem;
         line-height: 2rem;
-        background-color: blue;
         text-align: center;
         width: 100vw;
         display: flex;
+
         .headSearch__input {
             box-sizing: border-box;
             width: 80vw;
             outline: none;
-            border: 0.0625rem solid #12e0f9;
+            border: 0.0625rem solid $commonColor;
             padding: 0.3125rem 0 0.3125rem 1.25rem;
         }
         .headSearch__button {
             width: 20vw;
             outline: none;
             border: none;
-            background-color: #12e0f9;
+            background-color: $commonColor;
         }
+    }
+
+    .sticky {
+        @include displaySticky();
     }
 }
 </style>

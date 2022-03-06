@@ -19,6 +19,8 @@
     min-height: 30vw;
     display: flex;
     box-sizing: border-box;
+    border-bottom: .0625rem solid rgb(224, 224, 224);
+    margin-top: .3125rem;
     .store__img {
         width: 30vw;
         height: 30vw;

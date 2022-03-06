@@ -22,14 +22,15 @@
 </template>
 
 <style lang="scss" scoped>
+@import '../style/config.scss';
+@import '../style/mixin.scss';
 .options {
     background-color: #fff;
     height: 3rem;
     width: 100vw;
     position: fixed;
     bottom: 0;
-    display: flex;
-    align-items: center;
+    @include displayFlex(center, center);
     box-shadow: 0 -0.0625rem .3125rem #bebdbd;
     .options__index,
     .options__order,
@@ -37,15 +38,14 @@
         width: 33.3vw;
         font-size: 0.875rem;
         text-align: center;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+        
+        @include displayFlex(center, center, column);
         .options__icon {
             font-size: 1.2rem;
         }
     }
     .options__choosed {
-        color: #12e0f9;
+        color: $commonColor;
     }
 }
 </style>

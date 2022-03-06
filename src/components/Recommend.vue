@@ -15,30 +15,30 @@
                 </svg>
             </div>
         </div>
-        <div class="recommend__stores"></div>
-        <Store />
-        <Store />
-        <Store />
-        <Store />
-        <Store />
-        <Store />
-        <Store />
+        <div class="recommend__stores">
+            <Store />
+            <Store />
+            <Store />
+            <Store />
+            <Store />
+            <Store />
+            <Store />
+        </div>
     </div>
 </template>
 
 <style lang="scss" scoped>
+@import '../style/mixin.scss';
 .recommend {
     margin-top: 10vw;
-    overflow: hidden;
-    overflow-y: scroll;
+    margin-bottom: 5rem;
     .recommend__title {
         font-size: 1.125rem;
         text-align: center;
         font-weight: bold;
     }
     .recommend__options {
-        display: flex;
-        align-items: center;
+        @include displayFlex(center, center);
         height: 3rem;
         line-height: 3rem;
         text-align: center;
@@ -49,9 +49,25 @@
             width: 20vw;
         }
     }
+    .recommend__stores {
+        overflow: hidden;
+        overflow-y: scroll;
+    }
 }
 </style>
 
 <script setup>
 import Store from './Store.vue';
+// import useSticky from '../hooks/useSticky';
+// import { onMounted, onUnmounted } from 'vue';
+
+// const { useStickyEffect, isSticky } = useSticky('')
+
+// onMounted(() => {
+//     window.addEventListener('scroll', useStickyEffect)
+// })
+
+// onUnmounted(() => {
+//     window.removeEventListener('scroll', useStickyEffect)
+// })
 </script>
