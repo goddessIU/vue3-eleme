@@ -25,7 +25,8 @@
 @import '../style/config.scss';
 @import '../style/mixin.scss';
 .options {
-    background-color: #fff;
+    z-index: 100;
+    background-color: $bgColor;
     height: 3rem;
     width: 100vw;
     position: fixed;

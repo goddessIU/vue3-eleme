@@ -4,7 +4,8 @@ export const useStore = defineStore('index', {
     state: () => {
         return {
             addressData: {},
-            storesData: {}
+            storesData: {},
+            cityData: {}
         }
     },
     actions: {

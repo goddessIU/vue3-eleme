@@ -10,7 +10,12 @@ const router = createRouter({
     {
       path: '/address',
       name: 'address',
-      component: () => import('../views/address.vue')
+      component: () => import('../views/address/address.vue')
+    },
+    {
+      path: '/addAddress',
+      name: 'addAddress',
+      component: () => import('../views/AddAddress.vue')
     }
   ]
 })

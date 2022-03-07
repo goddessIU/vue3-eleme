@@ -1,6 +1,6 @@
 <template>
     <div class="commonHead">
-        <div class="commOnHead__icon">
+        <div class="commOnHead__icon" @click="goBack">
             <slot name="icon">
             </slot>
         </div>
@@ -8,7 +8,7 @@
             <slot name="title">
             </slot>
         </div>
-        <div class="commOnHead__application">
+        <div class="commOnHead__application" @click="props.func">
             <slot name="application">
             </slot>
         </div>
@@ -16,6 +16,14 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router';
+const router = useRouter()
+const props = defineProps(['func'])
+const goBack = () => {
+    router.back()
+}
+
+
 </script>
 
 <style lang="scss" scoped>
@@ -23,10 +31,12 @@
 @import '../style/mixin.scss';
 .commonHead {
     padding: 0 0.5rem;
-    color: #fff;
+    color: $bgColor;
     height: 3rem;
     background-color: $commonColor;
     @include displayFlex();
+    width: 100vw;
+    box-sizing: border-box;
     .commOnHead__icon {
         width: 20vw;
     }

@@ -19,6 +19,7 @@ const getLocation = async () => {
     const store = useStore()
     store.addressData = addressData || {}
     store.storesData = storesData || {}
+    store.cityData = data || {}
     return {
         addressData,
         storesData

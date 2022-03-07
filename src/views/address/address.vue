@@ -1,41 +1,32 @@
 <template>
     <div class="searchPage">
-        <common-header>
+        <common-header class="stickyHeader" :class="{'sticky': isSticky}"  :func="addAddress">
             <template #icon>
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-left" />
                 </svg>
             </template>
-            <template #title>
-                选择收获地址
-            </template>
-            <template #application>
-                新增地址
-            </template>
+
+            <template #title @click="goBack">选择收获地址</template>
+            <template #application>新增地址</template>
         </common-header>
-        <div class="searchAddress">
-            <div class="searchAddress__options">
-                北京
-                <svg class="icon headTop__address__down" aria-hidden="true">
-                    <use xlink:href="#icon-down" />
-                </svg>
-            </div>
-            <div class="searchAddress__input">
-                <input type="text" placeholder="请输入地址" />
-            </div>
-        </div>
+        <search-address :isSticky="isSticky"></search-address>
         <div class="currentAddress">
             <div class="currentAddress__title">当前地址</div>
             <div class="currentAddress__content">
-                <div class="currentAddress__title--left">北京丰台科技园</div>
-                <div class="currentAddress__title--right">
-                    <svg class="icon" aria-hidden="true">
+                <div
+                    class="currentAddress__title--left"
+                    @click="goIndex"
+                >{{ store.addressData.address }}</div>
+                <div class="currentAddress__title--right" @click="reAddress">
+                    <svg class="icon" :class="{ ' icon--rotate': isReaddress }">
                         <use xlink:href="#icon-Target" />
                     </svg>
                     重新定位
                 </div>
             </div>
         </div>
+        <!-- 需要得到用户信息，即登录才可以继续 -->
         <div class="harvestAddress">
             <div class="harvestAddress__title">售后地址</div>
             <div class="harvestAddress__content">
@@ -49,44 +40,85 @@
 </template>
 
 <script setup>
-import CommonHeader from '../components/CommonHeader.vue';
+import { onMounted, onUnmounted, ref } from 'vue';
+import { useStore } from '../../store';
+import { useRouter } from 'vue-router';
+import CommonHeader from '../../components/CommonHeader.vue';
+import getLocation from '../../utils/getLocation';
+import SearchAddress from './SearchAddress.vue';
+import useSticky from '../../hooks/useSticky';
+
+
+
+const store = useStore()
+const router = useRouter()
+
+//重新定位功能
+const useReAddress = () => {
+    let isReaddress = ref(false)
+    const reAddress = async () => {
+        isReaddress.value = true
+        const {
+            addressData
+        } = await getLocation()
+        isReaddress.value = false
+        return {
+            addressData
+        }
+    }
+    return {
+        isReaddress,
+        reAddress
+    }
+}
+const {
+    isReaddress,
+    reAddress
+} = useReAddress()
+
+
+
+
+
+const goIndex = () => {
+    router.push({
+        name: 'index'
+    })
+}
+
+const addAddress = () => {
+    router.push({
+        name: 'addAddress'
+    })
+}
+
+
+const {
+    useStickyEffect,
+    isSticky
+} = useSticky(0)
+
+onMounted(() => {
+    window.addEventListener('scroll', useStickyEffect)
+})
+
+onUnmounted(() => {
+    window.removeEventListener('scroll', useStickyEffect)
+})
+
 </script>
 
 <style lang="scss" scoped>
-@import "../style/mixin.scss";
-@import "../style/config.scss";
+@import "../../style/mixin.scss";
+@import "../../style/config.scss";
+
 .searchPage {
     background-color: $commonGray;
     height: 100vh;
     width: 100vw;
-    .searchAddress {
-        width: 100vw;
-        height: 3rem;
-        background-color: #fff;
-        @include displayFlex();
-        .searchAddress__options {
-            height: 3rem;
-            line-height: 3rem;
-            width: 30vw;
-            text-align: center;
-            font-size: 1rem;
-            color: $fontColor;
-        }
-        .searchAddress__input {
-            height: 3rem;
-            line-height: 3rem;
-            text-align: center;
-            width: 70vw;
-            box-sizing: border-box;
-            input {
-                width: 80%;
-                height: 2rem;
-                outline: none;
-                background-color: $commonGray;
-                border: none;
-                padding-left: 0.625rem;
-            }
-        }
+    .sticky {
+        @include displaySticky();
+        z-index: 90;
     }
     .currentAddress {
         .currentAddress__title {
@@ -100,7 +132,7 @@ import CommonHeader from '../components/CommonHeader.vue';
             @include displayFlex();
             height: 3rem;
             line-height: 3rem;
-            background-color: #fff;
+            background-color: $bgColor;
             padding-left: 0.5rem;
             padding-right: 0.5rem;
             font-weight: bold;
@@ -109,6 +141,9 @@ import CommonHeader from '../components/CommonHeader.vue';
                 color: $commonColor;
                 font-weight: normal;
                 font-size: 1rem;
+                .icon--rotate {
+                    @include animation-rotate();
+                }
             }
         }
     }
@@ -123,7 +158,7 @@ import CommonHeader from '../components/CommonHeader.vue';
         .harvestAddress__content {
             // height: 3rem;
             // line-height: 3rem;
-            background-color: #fff;
+            background-color: $bgColor;
             font-size: 1rem;
             font-weight: bold;
             padding-left: 0.5rem;

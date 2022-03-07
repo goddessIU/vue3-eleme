@@ -20,3 +20,16 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+
+@mixin animation-rotate($start: 0, $final: 360deg, $duration: 0.5s, $time: infinite) {
+  @keyframes animation-rotate {
+    0% {
+        transform: rotate($start);
+    }
+    100% {
+        transform: rotate($final);
+    }
+  }
+  animation: animation-rotate $duration $time;
+}
+
