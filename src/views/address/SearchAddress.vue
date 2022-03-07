@@ -1,4 +1,5 @@
 <template>
+    <!-- 地址页面中搜索部分 -->
     <div class="searchAddress">
         <div class="searchAddress__options">
             北京

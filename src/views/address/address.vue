@@ -1,6 +1,7 @@
 <template>
+    <!-- 地址页面 -->
     <div class="searchPage">
-        <common-header class="stickyHeader" :class="{'sticky': isSticky}"  :func="addAddress">
+        <common-header class="stickyHeader" :class="{ 'sticky': isSticky }" :func="addAddress">
             <template #icon>
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-left" />
@@ -47,9 +48,6 @@ import CommonHeader from '../../components/CommonHeader.vue';
 import getLocation from '../../utils/getLocation';
 import SearchAddress from './SearchAddress.vue';
 import useSticky from '../../hooks/useSticky';
-
-
-
 const store = useStore()
 const router = useRouter()
 
@@ -76,32 +74,38 @@ const {
     reAddress
 } = useReAddress()
 
+//路由跳转页面
+const changeRoute = () => {
+    const goIndex = () => {
+        router.push({
+            name: 'index'
+        })
+    }
 
-
-
-
-const goIndex = () => {
-    router.push({
-        name: 'index'
-    })
+    const addAddress = () => {
+        router.push({
+            name: 'addAddress'
+        })
+    }
+    return {
+        goIndex,
+        addAddress
+    }
 }
 
-const addAddress = () => {
-    router.push({
-        name: 'addAddress'
-    })
-}
+const {
+    goIndex,
+    addAddress
+} = changeRoute()
 
-
+//吸附功能实现
 const {
     useStickyEffect,
     isSticky
 } = useSticky(0)
-
 onMounted(() => {
     window.addEventListener('scroll', useStickyEffect)
 })
-
 onUnmounted(() => {
     window.removeEventListener('scroll', useStickyEffect)
 })

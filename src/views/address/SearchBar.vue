@@ -1,5 +1,6 @@
 <template>
-    <div class="searchInfo__bar">
+    <!-- 搜索部分每个搜索结果组件 -->
+    <div class="searchInfo__bar" @click="clickBar">
         <h1 class="searchInfo__bar__title" v-html="name"></h1>
         <span class="searchInfo__bar__distance">{{ distance }}km</span>
         <p class="searchInfo__bar__intro" v-html="address"></p>
@@ -9,24 +10,52 @@
 <script setup>
 import { computed } from 'vue';
 import { useStore } from '../../store';
+import { useRouter } from 'vue-router';
 import changeSearchColor from '../../utils/changeSearchColor'
 import getDistance from '../../utils/getDistance';
-const props = defineProps(['name', 'address', 'latitude', 'longitude',  'keyword'])
-const store = useStore()
-const name = computed(() => {
-    return changeSearchColor(props.name, props.keyword)
-})
-const address = computed(() => {
-    return changeSearchColor(props.address, props.keyword)
-})
-const distance = computed(() => {
-    return getDistance(parseFloat(store.addressData.latitude), parseFloat(store.addressData.longitude), parseFloat(props.latitude), parseFloat(props.longitude))
-})
+
+//用于得到渲染页面的值,以及路由，store，props
+const getValues = () => {
+    const props = defineProps(['name', 'address', 'latitude', 'longitude', 'keyword'])
+    const store = useStore()
+    const router = useRouter()
+    const name = computed(() => {
+        return changeSearchColor(props.name, props.keyword)
+    })
+    const address = computed(() => {
+        return changeSearchColor(props.address, props.keyword)
+    })
+    const distance = computed(() => {
+        return getDistance(parseFloat(store.addressData.latitude), parseFloat(store.addressData.longitude), parseFloat(props.latitude), parseFloat(props.longitude))
+    })
+    return {
+        name,
+        address,
+        distance,
+        store,
+        props,
+        router
+    }
+}
+
+const {
+    name,
+    address,
+    distance
+} = getValues()
+
+//用于处理点击搜索结果
+const clickBar = () => {
+    store.addressData.address = props.name
+    router.push({
+        name: 'index'
+    })
+}
 </script>
 
 <style lang="scss" scoped>
-@import '../../style/config.scss';
-@import '../../style/mixin.scss';
+@import "../../style/config.scss";
+@import "../../style/mixin.scss";
 .searchInfo__bar {
     height: 5rem;
     width: 100vw;

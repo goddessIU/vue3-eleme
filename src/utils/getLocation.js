@@ -2,6 +2,8 @@ import instance from '.././config/fetchData'
 import { set, get } from '.././config/storage.js'
 import { useStore } from '../store/index.js'
 
+//获取当前位置
+
 const getLocation = async () => {
     const data = await instance.get('/v1/cities?type=guess')
     const { latitude, longitude, name, id } = data

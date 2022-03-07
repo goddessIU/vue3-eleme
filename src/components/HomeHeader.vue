@@ -5,7 +5,9 @@
                 <svg class="icon headTop__address__icon" aria-hidden="true">
                     <use xlink:href="#icon-address" />
                 </svg>
-                <div class="headTop__address__text">{{ store.addressData.address }}</div>
+                <div class="headTop__address__text">
+                    {{ store.addressData.address }}
+                </div>
                 <svg class="icon headTop__address__down" aria-hidden="true">
                     <use xlink:href="#icon-down" />
                 </svg>
@@ -34,12 +36,12 @@
 import { onMounted, onUnmounted } from 'vue';
 import useSticky from '../hooks/useSticky.js'
 import { useStore } from '../store/index'
-import { useRouter } from 'vue-router'
+import { useRouter } from 'vue-router';
+
 const store = useStore()
 
 //设置吸附功能
 const { useStickyEffect, isSticky } = useSticky('.headTop');
-
 
 onMounted(() => {
     window.addEventListener('scroll', useStickyEffect)
@@ -67,26 +69,26 @@ const toAddress = () => {
     .headTop {
         @include displayFlex(center, space-between);
         .headTop__address {
-            color: $bgColor;
-            width: 60vw;
+            color: #fff;
+            // width: 60vw;
             height: 2rem;
             font-size: 1.25rem;
             line-height: 2rem;
             font-weight: bold;
             @include displayFlex();
-
+            
             .headTop__address__icon {
                 padding-top: 0.2rem;
                 font-size: 1.5rem;
             }
             .headTop__address__text {
                 @include ellipsis();
-                width: 45vw;
+                max-width: 45vw;
             }
             .headTop__address__down {
                 padding-top: 0.2rem;
                 font-size: 1.5rem;
-                color: $bgColor;
+                color: #fff;
             }
         }
         .headTop__application {
