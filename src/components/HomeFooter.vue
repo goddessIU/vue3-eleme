@@ -1,5 +1,5 @@
 <template>
-    <div class="options">
+    <div class="options" v-show="route.meta.showFoot===true">
         <div class="options__index options__choosed">
             <svg class="icon options__icon" aria-hidden="true">
                 <use xlink:href="#icon-index" />
@@ -20,6 +20,11 @@
         </div>
     </div>
 </template>
+
+<script setup>
+import { useRoute } from 'vue-router';
+const route = useRoute()
+</script>
 
 <style lang="scss" scoped>
 @import '../style/config.scss';

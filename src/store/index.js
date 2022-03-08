@@ -5,7 +5,10 @@ export const useStore = defineStore('index', {
         return {
             addressData: {},
             storesData: {},
-            cityData: {}
+            cityData: {},
+            storeInfoData: {},
+            currentStoreData: {},
+            currentShopIndex: undefined
         }
     },
     actions: {

@@ -1,5 +1,5 @@
 <template>
-    <div class="store">
+    <div class="store" @click="goStoreIndex">
         <div class="store__img">
             <img :src="storeData.image_path" class="store__img__pic" onerror="this.classList.add('store__img__onerror')">
         </div>
@@ -15,7 +15,20 @@
 </template>
 
 <script setup>
-const props = defineProps(['storeData'])
+import { useRouter } from 'vue-router';
+import { useStore } from '../store';
+const props = defineProps(['storeData', 'index'])
+const store = useStore()
+const router = useRouter()
+const goStoreIndex = () => {
+    store.currentShopIndex = props.index
+    router.push({
+        name: 'shopIndex',
+        query: {
+            shopId: props.storeData.id
+        }
+    })
+}
 </script>
 
 <style scoped lang="scss">

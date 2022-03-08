@@ -10,7 +10,7 @@ switch (env) {
 }
 const instance = axios.create({
     baseURL: url,
-    timeout: 1000
+    timeout: 5000
 });
 
 
