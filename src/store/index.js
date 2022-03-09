@@ -8,7 +8,9 @@ export const useStore = defineStore('index', {
             cityData: {},
             storeInfoData: {},
             currentStoreData: {},
-            currentShopIndex: undefined
+            currentShopIndex: undefined,
+            storageShop: {},
+            specObj: {}
         }
     },
     actions: {

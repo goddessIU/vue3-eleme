@@ -1,4 +1,5 @@
 <template>
+<!-- /v1/carts/checkout -->
     <div class="shopCart">
         <div class="shopCart__detail">
             <div class="shopCart__detail__price">￥160.00</div>
@@ -9,7 +10,7 @@
                 </svg>
                 <span
                 class="shopCart__detail__number">
-                    8
+                    0
                 </span>
             </div>
         </div>
@@ -18,6 +19,7 @@
 </template>
 
 <script setup>
+
 </script>
 
 <style lang="scss" scoped>

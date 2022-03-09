@@ -45,6 +45,14 @@ const router = createRouter({
           component: () => import('../views/shop/ShopEvaluation.vue')
         }
       ]
+    }, 
+    {
+      path: '/order',
+      name: 'order',
+      component: () => import('../views/order/OrderIndex.vue'),
+      meta: {
+        showFoot: false
+      },
     }
   ]
 })

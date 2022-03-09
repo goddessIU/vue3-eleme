@@ -7,11 +7,11 @@ import { useStore } from '../store/index.js'
 const getLocation = async () => {
     const data = await instance.get('/v1/cities?type=guess')
     const { latitude, longitude, name, id } = data
-    set('latitude', latitude)
-    set('longitude', longitude)
-    set('city_name', name)
-    set('city_id', id)
-    const addressData = await instance.get(`/v2/pois/${get('latitude')},${get('longitude')}`)
+    set('eleme', 'latitude', latitude)
+    set('eleme', 'longitude', longitude)
+    set('eleme', 'city_name', name)
+    set('eleme', 'city_id', id)
+    const addressData = await instance.get(`/v2/pois/${get('eleme', 'latitude')},${get('eleme', 'longitude')}`)
     const storesData = await instance.get('/shopping/restaurants', {
         params: {
             latitude,
