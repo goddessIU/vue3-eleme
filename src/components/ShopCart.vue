@@ -14,12 +14,19 @@
                 </span>
             </div>
         </div>
-        <button class="shopCart__settlement">去结算</button>
+        <button class="shopCart__settlement" @click="goOrder">去结算</button>
     </div>
 </template>
 
 <script setup>
-
+import { useRouter } from 'vue-router';
+const router = useRouter()
+const goOrder = () => {
+    console.log('**')
+    router.push({
+        name: 'order'
+    })
+}
 </script>
 
 <style lang="scss" scoped>
