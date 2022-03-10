@@ -88,7 +88,7 @@ const changeNum = ({secondIndex, firstIndex, operator, spec}) => {
     set('itemsObj', restaurantId, itemsObj[restaurantId])
     set('shopCart', restaurantId, storageShop)
     store.storageShop = getAll('shopCart')
-    // store.itemsObj = getAll('itemsObj')
+    store.itemsObj = getAll('itemsObj')
     console.log(foodObj)
 }
 

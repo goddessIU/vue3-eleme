@@ -53,6 +53,14 @@ const router = createRouter({
       meta: {
         showFoot: false
       },
+    },
+    {
+      path: '/fillAddress',
+      name: 'fillAddress',
+      component: () => import('../views/address/FillAddress.vue'),
+      meta: {
+        showFoot: false
+      },
     }
   ]
 })

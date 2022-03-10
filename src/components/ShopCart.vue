@@ -293,18 +293,7 @@ const {
     }
     .shopCart__settlement,
     .shopCart__unsettlement {
-        overflow-y: hidden;
-        width: 30vw;
-        text-align: center;
-        height: 3rem;
-        line-height: 3rem;
-        background-color: $butColor;
-        font-size: 1rem;
-        outline: none;
-        border: none;
-        color: #fff;
-        font-weight: bold;
-        box-sizing: border-box;
+        @include button();
     }
     .shopCart__unsettlement {
         background-color: #504c4c;

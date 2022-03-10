@@ -1,3 +1,5 @@
+@import './config.scss';
+
 @mixin displayFlex(
   $alignItems: center,
   $justifyContent: space-between,
@@ -21,15 +23,47 @@
   text-overflow: ellipsis;
 }
 
-@mixin animation-rotate($start: 0, $final: 360deg, $duration: 0.5s, $time: infinite) {
+@mixin animation-rotate(
+  $start: 0,
+  $final: 360deg,
+  $duration: 0.5s,
+  $time: infinite
+) {
   @keyframes animation-rotate {
     0% {
-        transform: rotate($start);
+      transform: rotate($start);
     }
     100% {
-        transform: rotate($final);
+      transform: rotate($final);
     }
   }
   animation: animation-rotate $duration $time;
 }
+
+@mixin detailBar($height: 2rem, $lineHeight: 2rem) {
+  height: $height;
+  line-height: $lineHeight;
+  @include displayFlex();
+  width: 100vw;
+}
+
+@mixin button {
+  overflow-y: hidden;
+    width: 30vw;
+    text-align: center;
+    height: 3rem;
+    line-height: 3rem;
+    background-color: $butColor;
+    font-size: 1rem;
+    outline: none;
+    border: none;
+    color: #fff;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+
+
+
+
+
 
