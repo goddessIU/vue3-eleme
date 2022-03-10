@@ -1,6 +1,6 @@
 <template>
-    <div class="ScrollComponent">
-        <SpecFoods v-if="showSpec" class="specFoods" @closeSpec="showSpec=!showSpec"/>
+    <div class="ScrollComponent" @click="closeShowSpec">
+        <SpecFoods v-if="showSpec" class="specFoods" @closeSpec="showSpec = !showSpec" />
         <!-- 实现左右联动滚动 -->
         <div class="left" ref="leftWrapper">
             <div
@@ -38,10 +38,11 @@
                                 v-if="item2.specfoods.length > 1"
                                 @click="changeShowSpec(secondIndex, firstIndex)"
                             >选规格</button>
+                            <!-- @blur="changeShowSpec(secondIndex, firstIndex)" -->
                             <div class="right__content__controlNum" v-else>
                                 <div
                                     class="right__controlNum__subtract"
-                                    @click="changeNum({secondIndex, firstIndex, operator: '-'})"
+                                    @click="changeNum({ secondIndex, firstIndex, operator: '-', spec: null })"
                                     :secondIndex="secondIndex"
                                     :firstIndex="firstIndex"
                                 >
@@ -49,11 +50,12 @@
                                         <use xlink:href="#icon-Subtract" />
                                     </svg>
                                 </div>
-                                <div class="right__controlNum__showNum">{{store.storageShop?.[item2['restaurant_id']]?.[item2['category_id']]?.[item2['item_id']]?.[item2.specfoods[0]['food_id']]?.quantity || 0 }}</div>
-                                
+                                <div
+                                    class="right__controlNum__showNum"
+                                >{{ store.storageShop?.[item2['restaurant_id']]?.[item2['category_id']]?.[item2['item_id']]?.[item2.specfoods[0]['sku_id']]?.quantity || 0 }}</div>
                                 <div
                                     class="right__controlNum__add"
-                                    @click="changeNum({secondIndex, firstIndex, operator:'+'})"
+                                    @click="changeNum({ secondIndex, firstIndex, operator: '+', spec: null })"
                                     :secondIndex="secondIndex"
                                     :firstIndex="firstIndex"
                                 >
@@ -72,7 +74,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, toRaw, watch, readonly,reactive } from 'vue';
+import { onMounted, ref, toRaw, watch, readonly, reactive } from 'vue';
 import { useStore } from '../../store/index'
 import _ from 'lodash'
 import ShopCart from '../../components/ShopCart.vue';
@@ -80,14 +82,14 @@ import SpecFoods from '../../components/SpecFoods.vue'
 import changeNum from '../../utils/addItem';
 
 import {
-    get,
-    set,
     getAll,
-    clearAll,
-    del
 } from '../../config/storage'
 
+//当前购物车
 const store = useStore()
+store.storageShop = getAll('shopCart')
+
+//左右联合滚动效果
 const useScrollEffect = () => {
     //左侧整体的ref
     const leftWrapper = ref(null)
@@ -182,7 +184,6 @@ const useScrollEffect = () => {
         choosedIndex
     }
 }
-
 const {
     clickLeftScrollRight,
     bindScrollEvent,
@@ -205,35 +206,54 @@ watch(
 )
 
 
-let sumPrice = ref(0)
-let allItems = ref([])
-let map = {}
 
-const delItem = () => {
 
-}
-
-store.storageShop = getAll('shopCart')
-let showSpec = ref(false)
-const changeShowSpec = (secondIndex, firstIndex) => {
-    showSpec.value = !showSpec.value
-    const firstLayer = store.storeInfoData[firstIndex]
-    //获得餐馆id
-    const restaurantId = firstLayer['restaurant_id']
-    const classId = firstLayer['id']
-    //获取该分类下的事物列表
-    const foodsArr = firstLayer['foods']
-    //获取点击的事物
-    const chosedFood = foodsArr[secondIndex]
-    //事物Id
-    const foodId = chosedFood['item_id']
-    //最细致的事物id
-    const foodRealId = chosedFood['specfoods'][0]['food_id']
-    store.specObj = {
-        classId: firstIndex,
-        foodId: secondIndex
+//打开选择规格页面
+const useShowSpecEffect = () => {
+    //控制变量
+    let showSpec = ref(false)
+    //关闭spec
+    const closeShowSpec = (e) => {
+        if (e.target.className === 'mask specFoods') {
+            showSpec.value = !showSpec.value
+        }
+    }
+    //改变spec是否展示
+    const changeShowSpec = (secondIndex, firstIndex) => {
+        showSpec.value = !showSpec.value
+        const firstLayer = store.storeInfoData[firstIndex]
+        //获得餐馆id
+        const restaurantId = firstLayer['restaurant_id']
+        const classId = firstLayer['id']
+        //获取该分类下的事物列表
+        const foodsArr = firstLayer['foods']
+        //获取点击的事物
+        const chosedFood = foodsArr[secondIndex]
+        //事物Id
+        const foodId = chosedFood['item_id']
+        //最细致的事物id
+        const foodRealId = chosedFood['specfoods'][0]['food_id']
+        store.specObj = {
+            classId: firstIndex,
+            foodId: secondIndex
+        }
+    }
+    return {
+        changeShowSpec,
+        closeShowSpec,
+        showSpec
     }
 }
+const {
+    changeShowSpec,
+    closeShowSpec,
+    showSpec
+} = useShowSpecEffect()
+
+
+
+
+
 
 
 </script>
@@ -243,7 +263,7 @@ const changeShowSpec = (secondIndex, firstIndex) => {
 @import "../../style/mixin.scss";
 .ScrollComponent {
     .specFoods {
-        z-index: 800;
+        z-index: 600;
         position: absolute;
         top: 9rem;
         left: 0;

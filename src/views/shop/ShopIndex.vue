@@ -29,8 +29,6 @@ instance.get(`/shopping/v2/menu`, {
     store.storeInfoData = data
     store.currentStoreData = store.storesData[store.currentShopIndex] || {}
 })
-//当前商店
-
 </script>
 
 <style lang="scss" scoped>

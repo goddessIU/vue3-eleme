@@ -1,4 +1,5 @@
 <template>
+    <!-- 表单条插槽 -->
     <div class="block">
         <slot name="content"></slot>
     </div>

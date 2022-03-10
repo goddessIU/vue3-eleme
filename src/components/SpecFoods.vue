@@ -22,7 +22,7 @@
                         operator: '+',
                         firstIndex: classId,
                         secondIndex: foodId,
-                        spec: spec
+                        specIndex: isChoosed
                     })"
                 >添加至购物车</button>
             </div>
@@ -120,36 +120,79 @@ import { useStore } from '../store';
 import changeNum from '../utils/addItem';
 const store = useStore()
 const emit = defineEmits(['closeSpec'])
-const classId = store.specObj.classId
-const foodId = store.specObj.foodId
-const specArrs = store.storeInfoData[classId].foods[foodId].specfoods
-let isChoosed = ref(0)
-let price = ref(
-    specArrs[0].price
-)
-let spec = ref(
-    specArrs[0].value
-)
-const chooseSpec = (index, specItem) => {
-    isChoosed.value = index
-    price.value = specItem.price
-    spec.value = specArrs[index].specs[0].value
-}
 
+// 获得相关id以及spec数组
+const useGetSpecArr = () => {
+    const classId = store.specObj.classId
+    const foodId = store.specObj.foodId
+    const specArrs = store.storeInfoData[classId].foods[foodId].specfoods
+    return {
+        classId,
+        foodId,
+        specArrs
+    }
+}
+const {
+    classId,
+    foodId,
+    specArrs
+} = useGetSpecArr()
+
+// 展示spec卡片中的相关信息
+const showCartDetail = () => {
+    let price = ref(
+        specArrs[0].price
+    )
+    let spec = ref(
+        specArrs[0].value
+    )
+    return {
+        spec,
+        price
+    }
+}
+const {
+    spec,
+    price
+} = showCartDetail()
+
+
+// 选择某个option
+const useChooseOption = () => {
+    let isChoosed = ref(0)
+    const chooseSpec = (index, specItem) => {
+        isChoosed.value = index
+        price.value = specItem.price
+        spec.value = specArrs[index].specs[0].value
+    }
+    return {
+        isChoosed,
+        chooseSpec
+    }
+}
+const {
+    isChoosed,
+    chooseSpec
+} = useChooseOption()
+
+
+//关闭spec框
 const closeSpec = () => {
     emit('closeSpec')
 }
+
+//加入购物车
 const addCart = ({
     operator,
     firstIndex,
     secondIndex,
-    spec
+    specIndex
 }) => {
     changeNum({
         operator,
         firstIndex,
         secondIndex,
-        spec: spec
+        spec: specIndex
     })
     closeSpec()
 }

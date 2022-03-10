@@ -1,4 +1,5 @@
 <template>
+    <!-- 本页面为通用头部 -->
     <div class="commonHead">
         <div class="commOnHead__icon" @click="goBack">
             <slot name="icon">

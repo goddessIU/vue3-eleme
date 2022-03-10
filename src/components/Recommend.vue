@@ -1,4 +1,5 @@
 <template>
+    <!-- 首页店铺部分 -->
     <div class="recommend">
         <h1 class="recommend__title">——推荐商家——</h1>
         <div class="recommend__options">

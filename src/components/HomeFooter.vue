@@ -1,4 +1,5 @@
 <template>
+    <!-- 最下方底部 -->
     <div class="options" v-show="route.meta.showFoot===true">
         <div class="options__index options__choosed">
             <svg class="icon options__icon" aria-hidden="true">

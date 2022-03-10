@@ -22,6 +22,7 @@ const store = useStore()
 const router = useRouter()
 const goStoreIndex = () => {
     store.currentShopIndex = props.index
+    store.currentShopId = props.storeData.id
     router.push({
         name: 'shopIndex',
         query: {

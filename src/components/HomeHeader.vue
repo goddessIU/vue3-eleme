@@ -1,4 +1,5 @@
 <template>
+    <!-- 首页头部 -->
     <div class="head">
         <div class="headTop">
             <div class="headTop__address" @click="toAddress">
@@ -56,9 +57,6 @@ const toAddress = () => {
         name: 'address'
     })
 }
-
-
-
 </script>
 
 <style lang="scss" scoped>

@@ -1,4 +1,5 @@
 <template>
+<!-- 首页活动条 -->
 <div class="service">
     <div class="service__item">
         <img src="../assets/images/yummy.png" class="service__img" alt="">
