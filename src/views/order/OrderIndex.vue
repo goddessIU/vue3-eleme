@@ -19,18 +19,18 @@
             <div class="order__time__title">送达时间</div>
             <div class="order__time__content">
                 <div class="time__content__firstLine">
-                    <span class="time__content__rule">尽快送达</span> |
-                    <span class="time__content__prediction">预计13:00</span>
+                    <span class="time__content__rule" v-if="!store?.orderData?.cart?.is_address_too_far">尽快送达</span> |
+                    <span class="time__content__prediction">预计{{store?.orderData?.delivery_reach_time}}</span>
                 </div>
                 <div class="time__content__secondLine">
-                    <span class="time__content__company">蜂鸟专送</span>
+                    <span class="time__content__company" v-if="store?.orderData?.cart?.is_deliver_by_fengniao">蜂鸟专送</span>
                 </div>
             </div>
         </div>
         <div class="order__pay">
             <div class="order__pay__way">
                 <h3>支付方式</h3>
-                <span>
+                <span @click="showPayWay">
                     <span>在线支付</span>
                     <span>
                         <svg class="icon" aria-hidden="true">
@@ -46,92 +46,50 @@
         </div>
         <div class="order__detail">
             <div class="order__detail__storeInfo">
-                <span>nb</span>
+                <span>{{store?.orderData?.cart?.restaurant_info?.name}}</span>
             </div>
             <div class="order__detail__bars">
-                <div class="order__detail__bar">
-                    <span class="order__detail__name">巧克力</span>
-                    <span class="order__detail__num">x2</span>
-                    <span class="order__detail__money">￥80</span>
-                </div>
-                <div class="order__detail__bar">
-                    <span class="order__detail__name">巧克力</span>
-                    <span class="order__detail__num">x2</span>
-                    <span class="order__detail__money">￥80</span>
-                </div>
-                <div class="order__detail__bar">
-                    <span class="order__detail__name">巧克力</span>
-                    <span class="order__detail__num">x2</span>
-                    <span class="order__detail__money">￥80</span>
-                </div>
-                <div class="order__detail__bar">
-                    <span class="order__detail__name">巧克力</span>
-                    <span class="order__detail__num">x2</span>
-                    <span class="order__detail__money">￥80</span>
-                </div>
-                <div class="order__detail__bar">
-                    <span class="order__detail__name">巧克力</span>
-                    <span class="order__detail__num">x2</span>
-                    <span class="order__detail__money">￥80</span>
-                </div>
-                <div class="order__detail__bar">
-                    <span class="order__detail__name">巧克力</span>
-                    <span class="order__detail__num">x2</span>
-                    <span class="order__detail__money">￥80</span>
-                </div>
-                <div class="order__detail__bar">
-                    <span class="order__detail__name">巧克力</span>
-                    <span class="order__detail__num">x2</span>
-                    <span class="order__detail__money">￥80</span>
-                </div>
-                <div class="order__detail__bar">
-                    <span class="order__detail__name">巧克力</span>
-                    <span class="order__detail__num">x2</span>
-                    <span class="order__detail__money">￥80</span>
-                </div>
-                <div class="order__detail__bar">
-                    <span class="order__detail__name">巧克力</span>
-                    <span class="order__detail__num">x2</span>
-                    <span class="order__detail__money">￥80</span>
-                </div>
-                <div class="order__detail__bar">
-                    <span class="order__detail__name">巧克力</span>
-                    <span class="order__detail__num">x2</span>
-                    <span class="order__detail__money">￥80</span>
+                <div class="order__detail__bar" v-for="(item, index) in store.orderData.cart.groups[0]">
+                    <span class="order__detail__name">{{item.name}}</span>
+                    <span class="order__detail__num">x{{item.quantity}}</span>
+                    <span class="order__detail__money">￥{{parseInt(item.quantity) * parseInt(item.price)}}</span>
                 </div>
             </div>
             <div class="order__detail__fee">
                 <div class="order__detail__bar">
                     <span class="order__detail__name">配送费</span>
-                    <span class="order__detail__money">￥80</span>
+                    <span class="order__detail__money">￥{{store?.orderData?.cart?.deliver_amount}}</span>
                 </div>
-                <div class="order__detail__bar">
-                    <span class="order__detail__name">餐盒</span>
-                    <span class="order__detail__money">￥60</span>
+                <div class="order__detail__bar" v-for="(otherData) in store.orderData.cart.extra">
+                    <span class="order__detail__name">{{otherData?.name}}</span>
+                    <span class="order__detail__money">￥{{otherData?.price}}</span>
                 </div>
             </div>
             <div class="order__detail__totalFee">
                 <div class="order__detail__bar">
-                    <span class="order__detail__needpay">订单 ￥2902</span>
-                    <span class="order__detail__unpay">待支付 ￥2902</span>
+                    <span class="order__detail__needpay">订单 ￥{{store?.orderData?.cart?.total}}</span>
+                    <span class="order__detail__unpay">待支付 ￥{{store?.orderData?.cart?.total}}</span>
                 </div>
             </div>
             <div class="order__detail__requests">
                 <div class="order__detail__bar">
                     <span class="order__detail__name">订单备注</span>
-                    <span class="order__detail__intro">不要啦 》</span>
+                    <span class="order__detail__intro">口味、偏好等></span>
                 </div>
-                <div class="order__detail__bar">
-                    <span class="order__detail__name">不需要开发票</span>
-                    <span class="order__detail__intro">不要啦 》</span>
+                <div class="order__detail__bar" v-if="store?.orderData?.invoice?.is_available">
+                    <span class="order__detail__name">发票抬头</span>
+                    <span class="order__detail__intro">{{store?.orderData?.invoice?.status_text}}></span>
                 </div>
             </div>
         </div>
         <div class="orderFoot">
-            <div class="orderFoot__left">待支付￥2902</div>
+            <div class="orderFoot__left">待支付￥{{store?.orderData?.cart?.total}}</div>
             <button class="orderFoot__right">确认下单</button>
         </div>
     </div>
+    <Teleport to="body">
+        <PopUp :show="showModal"/>
+    </Teleport>
 </template>
 
 <style lang="scss" scoped>
@@ -283,6 +241,46 @@
 </style>
 
 <script setup>
+import { ref } from 'vue';
 import CommonHeader from '../../components/CommonHeader.vue';
 import AddAddressBlock from '../../components/AddAddressBlock.vue';
+import instance from '../../config/fetchData';
+import PopUp from '../../components/PopUp.vue';
+import { useStore } from '../../store/index'
+const store = useStore()
+const currentShopId = store.currentShopId
+const itemsObj = store.itemsObj[currentShopId]
+const arr = []
+for (let foodId in itemsObj) {
+    const foodObj = itemsObj[foodId]
+    for (let itemId in foodObj) {
+        const item = foodObj[itemId]
+        arr.push({
+            attrs: item.attrs || [],
+            extra: item.extra || {},
+            id: item.foodId,
+            name: item.name,
+            packing_fee: item.packing_fee,
+            price: item.price,
+            quantity: item.quantity,
+            sku_id: item.sku_id,
+            specs: [item.specs],
+            stock: item.stock
+        })
+    }
+
+}
+instance.post('/v1/carts/checkout', {
+    geohash: store.addressData.geohash,
+    restaurant_id: currentShopId,
+    entities: [arr]
+}).then(data => {
+    store.getOrderData(data)
+})
+
+
+let showModal = ref(false)
+const showPayWay = () => {
+    showModal.value = true
+}
 </script>

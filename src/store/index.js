@@ -21,10 +21,15 @@ export const useStore = defineStore('index', {
             //当前商店的id,因为结算是按店铺来分开算的
             currentShopId: undefined,
             //已购商品，用来展示购物车，所以去掉了中间反复嵌套的内容
-            itemsObj: getAll('itemsObj') || {}
+            itemsObj: getAll('itemsObj') || {},
+            //订单信息
+            orderData: {}
         }
     },
     actions: {
+        getOrderData(data) {
+            this.orderData = data
+        }
     },
     getters: {
 
