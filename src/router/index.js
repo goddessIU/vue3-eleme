@@ -9,7 +9,7 @@ const router = createRouter({
         showFoot: true
       },
       component: () => import('../views/home/index.vue')
-    }, 
+    },
     {
       path: '/address',
       name: 'address',
@@ -20,7 +20,7 @@ const router = createRouter({
     },
     {
       path: '/addAddress',
-      name: 'addAddress',meta: {
+      name: 'addAddress', meta: {
         showFoot: true
       },
       component: () => import('../views/AddAddress.vue')
@@ -45,7 +45,7 @@ const router = createRouter({
           component: () => import('../views/shop/ShopEvaluation.vue')
         }
       ]
-    }, 
+    },
     {
       path: '/order',
       name: 'order',
@@ -53,15 +53,26 @@ const router = createRouter({
       meta: {
         showFoot: false
       },
+      redirect: '/order/orderpage',
+      children: [
+        {
+          path: 'orderpage',
+          name: 'orderpage',
+          component: () => import('../views/order/OrderPage.vue')
+        },
+        {
+          path: 'fillAddress',
+          name: 'fillAddress',
+          component: () => import('../views/address/FillAddress.vue')
+        },
+        {
+          path: 'remark',
+          name: 'remark',
+          component: () => import('../views/order/ReMark.vue')
+        }
+      ]
     },
-    {
-      path: '/fillAddress',
-      name: 'fillAddress',
-      component: () => import('../views/address/FillAddress.vue'),
-      meta: {
-        showFoot: false
-      },
-    }
+
   ]
 })
 
