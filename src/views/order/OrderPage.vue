@@ -74,7 +74,7 @@
             </div>
             <div class="order__detail__bar" v-if="store?.orderData?.invoice?.is_available">
                 <span class="order__detail__name">发票抬头</span>
-                <span class="order__detail__intro">{{ store?.orderData?.invoice?.status_text }}></span>
+                <span class="order__detail__intro" @click="goInvoice">{{ store?.orderData?.invoice?.status_text }}></span>
             </div>
         </div>
     </div>
@@ -269,6 +269,10 @@ instance.post('/v1/carts/checkout', {
 
 const goReMark = () => {
     router.push({ name: 'remark' })
+}
+
+const goInvoice = () => {
+    router.push({ name: 'invoice' })
 }
 
 // 展示payment block

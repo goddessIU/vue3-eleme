@@ -9,9 +9,7 @@
 
             <template #title @click="goBack">{{ headTitle }}</template>
             <template #application>
-                <svg class="icon options__icon" aria-hidden="true">
-                    <use xlink:href="#icon-user" />
-                </svg>
+                <span v-html="headApp"></span>
             </template>
         </common-header>
         <router-view></router-view>
@@ -45,6 +43,15 @@ const headTitle = computed(() => {
         return '确认订单'
     } else if (route.path.includes('remark')) {
         return '订单备注'
+    } else if (route.path.includes('invoice')) {
+        return '选择发票抬头'
+    }
+})
+const headApp = computed(() => {
+    if (route.path.includes('orderpage')) {
+        return '<span>登录|注册</span>'
+    } else {
+        return ''
     }
 })
 </script>

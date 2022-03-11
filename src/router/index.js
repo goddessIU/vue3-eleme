@@ -69,6 +69,11 @@ const router = createRouter({
           path: 'remark',
           name: 'remark',
           component: () => import('../views/order/ReMark.vue')
+        }, 
+        {
+          path: 'invoice',
+          name: 'invoice',
+          component: () => import('../views/order/Invoice.vue')
         }
       ]
     },
