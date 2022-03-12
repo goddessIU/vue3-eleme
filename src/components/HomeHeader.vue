@@ -14,7 +14,8 @@
                 </svg>
             </div>
             <div class="headTop__application">
-                <div class="headTop__shopCart">
+                <div class="headTop__application__signup" @click="toSignUp">登录|注册</div>
+                <!-- <div class="headTop__shopCart">
                     <svg class="icon" aria-hidden="true">
                         <use xlink:href="#icon-shop-cart-" />
                     </svg>
@@ -23,7 +24,7 @@
                     <svg class="icon" aria-hidden="true">
                         <use xlink:href="#icon-xiaoxi" />
                     </svg>
-                </div>
+                </div> -->
             </div>
         </div>
         <div class="headSearch" :class="{ 'sticky': isSticky }">
@@ -55,6 +56,11 @@ const router = useRouter()
 const toAddress = () => {
     router.push({
         name: 'address'
+    })
+}
+const toSignUp = () => {
+    router.push({
+        name: 'signup'
     })
 }
 </script>
@@ -97,6 +103,10 @@ const toAddress = () => {
             }
             .headTop__message {
                 font-size: 1.25rem;
+            }
+            .headTop__application__signup {
+                font-size: 1rem;
+                color: #fff;
             }
         }
     }

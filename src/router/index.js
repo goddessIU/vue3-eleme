@@ -77,7 +77,24 @@ const router = createRouter({
         }
       ]
     },
-
+    {
+      path: '/signup',
+      name: 'signup',
+      component: () => import('../views/login/Index.vue'),
+      redirect: '/signup/login',
+      children: [
+        {
+          path: 'login',
+          name: 'login',
+          component: () => import('../views/login/Login.vue')
+        },
+        {
+          path: 'resetpassword',
+          name: 'resetpassword',
+          component: () => import('../views/login/ResetPassword.vue')
+        }
+      ]
+    }
   ]
 })
 
