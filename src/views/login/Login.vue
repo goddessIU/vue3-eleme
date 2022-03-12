@@ -2,26 +2,36 @@
     <div class="formBlock">
         <login-form-item>
             <template #input>
-                <input type="text" class="formItem__input" placeholder="账号" />
+                <input type="text" class="formItem__input" placeholder="账号" v-model="account" />
             </template>
         </login-form-item>
         <login-form-item>
             <template #input>
-                <input type="text" class="formItem__input" placeholder="密码" />
-                <div class="formItem__showPassword">
-                    <div class="showPassword__bar showPassword__bar--final">
+                <input
+                    :type="passwordType"
+                    class="formItem__input"
+                    placeholder="密码"
+                    v-model="password"
+                />
+                <div class="formItem__showPassword" @click="showPassword">
+                    <div
+                        class="showPassword__bar"
+                        :class="{ 'showPassword__bar--final': passwordType === 'text' }"
+                    >
                         abc
-
-                        <div class="showPassword__bar__circle showPassword__bar__circle--final"></div>
+                        <div
+                            class="showPassword__bar__circle"
+                            :class="{ 'showPassword__bar__circle--final': passwordType === 'text' }"
+                        ></div>
                     </div>
                 </div>
             </template>
         </login-form-item>
         <login-form-item>
             <template #input>
-                <input type="text" class="formItem__input" placeholder="验证码" />
-                <img src="../../assets/images/icon.png" class="formItem__code">
-                <div class="formItem__changeCode">
+                <input type="text" class="formItem__input" placeholder="验证码" v-model="code" />
+                <img :src="codeImg" class="formItem__code" />
+                <div class="formItem__changeCode" @click="reloadCode">
                     <span>看不清</span>
                     <span>换一张</span>
                 </div>
@@ -32,16 +42,111 @@
         温馨提示：未注册过的账号，登录时将自动注册
         注册过的用户可凭账号密码登录
     </div>
-    <button class="pushForm">确定</button>
+    <button class="pushForm" @click="putLogin">确定</button>
     <div class="goReset">
         <span @click="goReset">重置密码？</span>
     </div>
+    <Teleport to="body">
+        <tip-window :show="ShowTip">
+            <template #content>{{ alertTip }}</template>
+        </tip-window>
+    </Teleport>
 </template>
 
 <script setup>
 import LoginFormItem from '../../components/LoginFormItem.vue'
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import instance from '../../config/fetchData';
+import { useCodeEffect, goLogin } from '../../service/getData'
+import TipWindow from '../../components/TipWindow.vue';
 const router = useRouter()
+
+// 控制登录信息
+const useLoginEffect = () => {
+    let account = ref('')
+    let password = ref('')
+    let code = ref('')
+    let alertTip = ref('')
+    let ShowTip = ref(false)
+    const putLogin = async () => {
+        if (account.value === '' || password.value === '' || code.value === '') return;
+        let data = await goLogin({ username: account.value, password: password.value, captcha_code: code.value })
+        if (data.status === 1) {
+            alertTip.value = '登录成功'
+            ShowTip.value = true
+            setTimeout(() => {
+                ShowTip.value = false
+                alertTip.value = ''
+                router.push({
+                    name: 'index'
+                })
+            }, 3000)
+
+        } else {
+            alertTip.value = '登录失败'
+            ShowTip.value = true
+            setTimeout(() => {
+                ShowTip.value = false
+                alertTip.value = ''
+            }, 3000)
+        }
+    }
+    return {
+        account,
+        password,
+        code,
+        alertTip,
+        putLogin,
+        ShowTip
+    }
+}
+const {
+    account,
+    password,
+    code,
+    putLogin,
+    alertTip,
+    ShowTip
+} = useLoginEffect()
+
+
+// 控制是否展示密码
+const usePasswordType = () => {
+    let passwordType = ref('password')
+    const showPassword = () => {
+        if (passwordType.value === 'password') {
+            passwordType.value = 'text'
+        } else {
+            passwordType.value = 'password'
+        }
+    }
+    return {
+        passwordType,
+        showPassword
+    }
+}
+const {
+    passwordType,
+    showPassword
+} = usePasswordType()
+
+
+
+// 获取验证码
+let codeImg = ref('')
+const reloadCode = () => {
+    getCode().then(data => codeImg.value = data.code)
+}
+const {
+    getCode
+} = useCodeEffect()
+onMounted(() => {
+    getCode().then(data => codeImg.value = data.code)
+})
+
+// 去往修改密码页面
+
 const goReset = () => {
     router.push({
         name: 'resetpassword'
@@ -50,7 +155,7 @@ const goReset = () => {
 </script>
 
 <style lang="scss" scoped>
-@import '../../style/mixin.scss';
+@import "../../style/mixin.scss";
 .formBlock {
     margin-top: 1rem;
     .formItem__input {
@@ -62,7 +167,7 @@ const goReset = () => {
         border: none;
     }
     .formItem__code {
-        width: 10vw;
+        width: 5rem;
         height: 2.8rem;
         line-height: 3rem;
     }
@@ -89,28 +194,33 @@ const goReset = () => {
             padding: 0 1rem;
             font-size: 0.5rem;
             color: #fff;
+            transition: all 0.2s linear;
+
             .showPassword__bar__circle {
                 height: 1.5rem;
                 width: 1.5rem;
                 background-color: #1e80ff;
-                border-radius:1.5rem;
+                border-radius: 1.5rem;
                 position: absolute;
                 top: -0.25rem;
                 left: -0.25rem;
+                transition: all 0.2s linear;
             }
             .showPassword__bar__circle--final {
                 left: 4.25rem;
+                transition: all 0.2s linear;
             }
         }
         .showPassword__bar--final {
             background-color: #46f046;
+            transition: all 0.2s linear;
         }
     }
 }
 .tips {
     color: red;
     font-size: 0.8rem;
-    padding: 0.3rem
+    padding: 0.3rem;
 }
 .pushForm {
     @include button();

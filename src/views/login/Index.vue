@@ -6,7 +6,7 @@
             </svg>
         </template>
 
-        <template #title @click="goBack">密码登录</template>
+        <template #title @click="goBack">{{headTitle}}</template>
     </common-header>
     <div class="view">
         <router-view></router-view>

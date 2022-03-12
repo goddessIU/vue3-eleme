@@ -6,7 +6,7 @@
         <div class="store__intro">
             <h1 class="store__title">{{storeData.name}}</h1>
             <div class="store__rate">几颗星：{{storeData.rating}} 月售{{storeData.recent_order_num}}单</div>
-            <div class="store__service">{{storeData.piecewise_agent_fee.tips}} {{storeData.distance}}|{{storeData.order_lead_time}}</div>
+            <div class="store__service">{{storeData?.piecewise_agent_fee?.tips}} {{storeData.distance}}|{{storeData.order_lead_time}}</div>
             <div class="store__activity">
                 <span>活动</span>
             </div>
