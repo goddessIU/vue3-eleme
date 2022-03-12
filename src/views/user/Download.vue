@@ -2,9 +2,43 @@
     <div class="downloadBlock">
         <img class="downloadBlock__img" src="../../assets/images/app.png" alt="">
         <span class="downloadBlock__title">下载饿了么App</span>
-        <button class="downloadBlock__button">下载</button>
+        <button class="downloadBlock__button" @click="toDownLoad">下载</button>
     </div>
+    <Teleport to="body">
+        <jump-window 
+        @closeJumpWindow="closeJumpWindowFunc"
+        :show="ShowTip">
+            <template #icon>
+                <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-exclamation-circle-copy" />
+                    </svg>
+            </template>
+            <template #content>
+                ios用户请前往应用商店下载
+            </template>
+            <template #button>
+                确定
+            </template>
+        </jump-window>
+    </Teleport>
 </template>
+
+<script setup>
+import judgeClient from '../../utils/judgeClient';
+import JumpWindow from '../../components/JumpWindow.vue';
+import { ref } from 'vue';
+let ShowTip = ref(false)
+const toDownLoad = () => {
+    let res = judgeClient()
+    if (res) {
+        ShowTip.value = true
+    }
+}
+const closeJumpWindowFunc = () => {
+    ShowTip.value = false
+}
+
+</script>
 
 <style lang="scss" scoped>
 @import '../../style/mixin.scss';
