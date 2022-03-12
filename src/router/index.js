@@ -98,7 +98,20 @@ const router = createRouter({
     {
       path: '/user',
       name: 'user',
-      component: () => import('../views/user/Index.vue')
+      component: () => import('../views/user/Index.vue'),
+      redirect: '/user/userpage',
+      children: [
+        {
+          path: 'userpage',
+          name: 'userpage',
+          component: () => import('../views/user/IndexPage.vue')
+        },
+        {
+          path: 'download',
+          name: 'download',
+          component: () => import('../views/user/Download.vue')
+        }
+      ]
     }
   ]
 })

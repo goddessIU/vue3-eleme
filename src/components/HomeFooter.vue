@@ -13,7 +13,7 @@
             </svg>
             订单
         </div>
-        <div class="options__user">
+        <div class="options__user" @click="goUser">
             <svg class="icon options__icon" aria-hidden="true">
                 <use xlink:href="#icon-user" />
             </svg>
@@ -23,8 +23,14 @@
 </template>
 
 <script setup>
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 const route = useRoute()
+const router = useRouter()
+const goUser = () => {
+    router.push({
+        name: 'user'
+    })
+}
 </script>
 
 <style lang="scss" scoped>
