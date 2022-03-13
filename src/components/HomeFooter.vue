@@ -37,9 +37,9 @@ const goUser = () => {
 
 const goOrder = () => {
     choosedIndex.value = 1
-    // router.push({
-    //     name: ''
-    // })
+    router.push({
+        name: 'orderhome'
+    })
 }
 
 const goHome = () => {

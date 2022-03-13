@@ -100,13 +100,13 @@ const getShopInfo = async () => {
             }
         })
         return data
-    } catch(err) {
+    } catch (err) {
         throw err
     }
 }
 
 //提交订单
-const postCheckout = async ({geohash, restaurant_id, entities}) => {
+const postCheckout = async ({ geohash, restaurant_id, entities }) => {
     try {
         let data = await instance.post('/v1/carts/checkout', {
             geohash,
@@ -114,12 +114,32 @@ const postCheckout = async ({geohash, restaurant_id, entities}) => {
             entities
         })
         return data
-    }  catch (err) {
+    } catch (err) {
         throw err
     }
-    
+
 }
 
+// 获取首页商店
+const getRecommend = async (index, offset) => {
+    try {
+        const storesData = await instance.get('/shopping/restaurants', {
+            params: {
+                latitude: get('eleme', 'latitude'),
+                longitude: get('eleme', 'longitude'),
+                order_by: index,
+                offset
+            }
+        })
+        const store = useStore()
+        store.storesData = storesData || {}
+        return {
+            storesData
+        }
+    } catch (error) {
+        throw error
+    }
+}
 
-export { getCode, resetPassword, goLogin, searchKeyword, getLocation, getShopInfo, postCheckout }
+export { getCode, resetPassword, goLogin, searchKeyword, getLocation, getShopInfo, postCheckout, getRecommend }
 

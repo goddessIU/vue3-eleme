@@ -108,6 +108,14 @@ const router = createRouter({
           component: () => import('../views/user/Download.vue')
         }
       ]
+    },
+    {
+      path: '/orderhome',
+      name: 'orderhome',
+      component: () => import('../views/order/OrderHome.vue'),
+      meta: {
+        showFoot: true
+      }
     }
   ]
 })
