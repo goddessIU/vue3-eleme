@@ -8,13 +8,13 @@
 
 <style lang="scss" scoped>
 .tip {
-    width: 30vw;
+    width: 50vw;
     height: 3rem;
     background-color: rgba(255, 255, 255, 0.8);
     border-radius: 0.3rem;
     line-height: 3rem;
     text-align: center;
-    font-size: 1.2rem;
+    font-size: 1rem;
     position: fixed;
     top: 5vh;
     left: 50vw;

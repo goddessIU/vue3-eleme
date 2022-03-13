@@ -14,7 +14,7 @@
     <div class="searchInfo" :class="{ 'position--absolute': props.isSticky }">
         <!-- 搜索时让下面html内容为absolute浮动在最上面，盖住下面 -->
         <SearchBar
-            v-show="showBar"
+            v-if="showBar"
             v-for="(item, index) in searchData"
             :key="index"
             :name="item.name"
@@ -32,10 +32,10 @@
 
 <script setup>
 import { ref, defineProps } from 'vue';
-import instance from '../../config/fetchData';
 import _ from 'lodash';
 import { useStore } from '../../store';
 import SearchBar from './SearchBar.vue';
+import { searchKeyword } from '../../service/getData'
 //用于输入地址，获取本城市该地址信息
 const props = defineProps(['isSticky'])
 const useSearchEffect = () => {
@@ -45,23 +45,21 @@ const useSearchEffect = () => {
     let showBar = ref(false)
     const getSearchInfo = async () => {
         try {
-            if (!keyword.value) {
+            if (keyword.value === '') {
                 showBar.value = false
-                return
+                return;
             }
-            let data = await instance.get(`/v1/pois?city_id=${store.cityData.id}&keyword=${keyword.value}&type=search`)
+            let data = await searchKeyword(store.cityData.id, keyword.value)
             if (data.name === "ERROR_GET_POSITION") {
                 throw new Error('请求失败')
             }
             searchData.value = data
             showBar.value = true
-            console.log(searchData.value)
-        } catch(err) {
+        } catch (err) {
             console.error(err)
         }
     }
     const toSearch = _.debounce(getSearchInfo, 500)
-
     return {
         toSearch,
         keyword,
@@ -70,7 +68,6 @@ const useSearchEffect = () => {
         showBar
     }
 }
-
 const {
     toSearch,
     keyword,

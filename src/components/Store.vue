@@ -53,7 +53,7 @@ const goStoreIndex = () => {
             height: 20vw;
         }
         .store__img__onerror {
-            background: url(../assets/images/icon.png) no-repeat center;
+            background: url(../assets/images/userIcon.png) no-repeat center;
             background-size: contain;
         }
     }

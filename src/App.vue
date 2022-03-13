@@ -5,7 +5,7 @@
 
 <script setup>
 import { onMounted } from 'vue';
-import getLocation from './utils/getLocation'
+import { getLocation } from './service/getData'
 import HomeFooter from './components/HomeFooter.vue';
 
 onMounted(() => {

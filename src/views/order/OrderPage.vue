@@ -43,7 +43,10 @@
             <span>{{ store?.orderData?.cart?.restaurant_info?.name }}</span>
         </div>
         <div class="order__detail__bars">
-            <div class="order__detail__bar" v-for="(item, index) in store?.orderData?.cart?.groups?.[0]">
+            <div
+                class="order__detail__bar"
+                v-for="(item, index) in store?.orderData?.cart?.groups?.[0]"
+            >
                 <span class="order__detail__name">{{ item.name }}</span>
                 <span class="order__detail__num">x{{ item.quantity }}</span>
                 <span
@@ -74,7 +77,10 @@
             </div>
             <div class="order__detail__bar" v-if="store?.orderData?.invoice?.is_available">
                 <span class="order__detail__name">发票抬头</span>
-                <span class="order__detail__intro" @click="goInvoice">{{ store?.orderData?.invoice?.status_text }}></span>
+                <span
+                    class="order__detail__intro"
+                    @click="goInvoice"
+                >{{ store?.orderData?.invoice?.status_text }}></span>
             </div>
         </div>
     </div>
@@ -226,8 +232,8 @@
 </style>
 
 <script setup>
-import { ref } from 'vue';
-import instance from '../../config/fetchData';
+import { onMounted, ref } from 'vue';
+import { postCheckout } from '../../service/getData'
 import AddAddressBlock from '../../components/AddAddressBlock.vue';
 import PopUp from '../../components/PopUp.vue';
 import { useStore } from '../../store/index'
@@ -255,17 +261,24 @@ for (let foodId in itemsObj) {
             stock: item.stock
         })
     }
-
 }
-instance.post('/v1/carts/checkout', {
-    geohash: store.addressData.geohash,
-    restaurant_id: currentShopId,
-    entities: [arr]
-}).then(data => {
-    store.getOrderData(data)
-}).catch(err => {
-    console.error(err)
-}) 
+
+//用来提交订单
+const usePostCheckout = async () => {
+    try {
+        let data = await postCheckout({
+            geohash: store.addressData.geohash,
+            restaurant_id: currentShopId,
+            entities: [arr]
+        })
+        store.getOrderData(data)
+    } catch (err) {
+        console.error(err)
+    }
+}
+onMounted(() => {
+    usePostCheckout()
+})
 
 const goReMark = () => {
     router.push({ name: 'remark' })

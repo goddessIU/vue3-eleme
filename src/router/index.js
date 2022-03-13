@@ -93,6 +93,9 @@ const router = createRouter({
       name: 'user',
       component: () => import('../views/user/Index.vue'),
       redirect: '/user/userpage',
+      meta: {
+        showFoot: true
+      },
       children: [
         {
           path: 'userpage',

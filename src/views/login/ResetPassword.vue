@@ -51,7 +51,7 @@
             <template #input>
                 <input type="text" class="formItem__input" placeholder="验证码" v-model="code" />
                 <img :src="codeImg" class="formItem__code" />
-                <div class="formItem__changeCode" @click="reloadCode">
+                <div class="formItem__changeCode" @click="useGetCode">
                     <span>看不清</span>
                     <span>换一张</span>
                 </div>
@@ -69,19 +69,46 @@
 <script setup>
 import LoginFormItem from '../../components/LoginFormItem.vue'
 import { onMounted, ref } from 'vue'
-import { useCodeEffect, resetPassword } from '../../service/getData'
+import { getCode, resetPassword } from '../../service/getData'
 import { useRouter } from 'vue-router'
 
 //展示验证码
-let codeImg = ref('')
-const reloadCode = () => {
-    getCode().then(data => codeImg.value = data.code)
+const useCodeEffect = () => {
+    let codeImg = ref('')
+    const useGetCode = async () => {
+        try {
+            let data = await getCode()
+            if (data.status === 1) {
+                codeImg.value = data.code
+            } else {
+                alertTip.value = '获取二维码失败'
+                ShowTip.value = true
+                setTimeout(() => {
+                    ShowTip.value = false
+                    alertTip.value = ''
+                }, 3000)
+            }
+        } catch (err) {
+            alertTip.value = err.name
+            ShowTip.value = true
+            setTimeout(() => {
+                ShowTip.value = false
+                alertTip.value = ''
+            }, 3000)
+            return;
+        }
+    }
+    return {
+        codeImg,
+        useGetCode
+    }
 }
 const {
-    getCode
+    codeImg,
+    useGetCode
 } = useCodeEffect()
 onMounted(() => {
-    getCode().then(data => codeImg.value = data.code)
+    useGetCode()
 })
 
 
@@ -114,27 +141,45 @@ const putForm = () => {
     let alertTip = ref('')
     let ShowTip = ref(false)
     const toResetPassword = async () => {
+        if (!account.value) {
+            alertTip.value = '不能为空'
+            ShowTip.value = true
+            setTimeout(() => {
+                ShowTip.value = false
+                alertTip.value = ''
+            }, 3000)
+            return;
+        }
         const router = useRouter()
-        let res = await resetPassword()
-        if (res.status === 1) {
-            alertTip.value = '重置成功'
-            ShowTip.value = true
-            setTimeout(() => {
-                ShowTip.value = false
-                alertTip.value = ''
-                router.push({
-                    name: 'index'
-                })
-            }, 3000)
+        try {
+            let res = await resetPassword()
+            if (res.status === 1) {
+                alertTip.value = '重置成功'
+                ShowTip.value = true
+                setTimeout(() => {
+                    ShowTip.value = false
+                    alertTip.value = ''
+                    router.push({
+                        name: 'index'
+                    })
+                }, 3000)
 
-        } else {
-            console.log('**')
-            alertTip.value = '重置失败'
+            } else {
+                alertTip.value = '重置失败'
+                ShowTip.value = true
+                setTimeout(() => {
+                    ShowTip.value = false
+                    alertTip.value = ''
+                }, 3000)
+            }
+        } catch (err) {
+            alertTip.value = err.name
             ShowTip.value = true
             setTimeout(() => {
                 ShowTip.value = false
                 alertTip.value = ''
             }, 3000)
+            return;
         }
     }
     return {

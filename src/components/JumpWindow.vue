@@ -46,8 +46,7 @@
         width: 100%;
     }
 }
-.fade-enter-active,
-.fade-leave-active {
+.fade-enter-active {
     animation: bounce-in 0.5s;
 }
 

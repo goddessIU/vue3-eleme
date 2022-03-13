@@ -14,7 +14,7 @@ switch (env) {
 }
 const instance = axios.create({
     baseURL: url,
-    timeout: 10
+    timeout: 5000
 });
 
 
@@ -22,12 +22,12 @@ const instance = axios.create({
 instance.interceptors.response.use((response) => {
     if (response.status === 200) {
         if (response.data.status === 0) {
-            throw AxiosError()
+            throw new AxiosError()
         } else {
             return response.data
         }
     } else {
-        throw AxiosError()
+        throw new AxiosError()
     }
 }, (error) => {
     if (error.message.includes('timeout')) {

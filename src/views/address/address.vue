@@ -44,9 +44,9 @@ import { onMounted, onUnmounted, ref } from 'vue';
 import { useStore } from '../../store';
 import { useRouter } from 'vue-router';
 import CommonHeader from '../../components/CommonHeader.vue';
-import getLocation from '../../utils/getLocation';
 import SearchAddress from './SearchAddress.vue';
 import useSticky from '../../hooks/useSticky';
+import { getLocation } from '../../service/getData';
 const store = useStore()
 const router = useRouter()
 
@@ -54,13 +54,17 @@ const router = useRouter()
 const useReAddress = () => {
     let isReaddress = ref(false)
     const reAddress = async () => {
-        isReaddress.value = true
-        const {
-            addressData
-        } = await getLocation()
-        isReaddress.value = false
-        return {
-            addressData
+        try {
+            isReaddress.value = true
+            const {
+                addressData
+            } = await getLocation()
+            isReaddress.value = false
+            return {
+                addressData
+            }
+        } catch (err) {
+            console.error(err)
         }
     }
     return {

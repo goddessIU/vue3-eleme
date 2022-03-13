@@ -31,7 +31,7 @@
             <template #input>
                 <input type="text" class="formItem__input" placeholder="验证码" v-model="code" />
                 <img :src="codeImg" class="formItem__code" />
-                <div class="formItem__changeCode" @click="reloadCode">
+                <div class="formItem__changeCode" @click="useGetCode">
                     <span>看不清</span>
                     <span>换一张</span>
                 </div>
@@ -57,8 +57,7 @@
 import LoginFormItem from '../../components/LoginFormItem.vue'
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import instance from '../../config/fetchData';
-import { useCodeEffect, goLogin } from '../../service/getData'
+import { getCode, goLogin } from '../../service/getData'
 import TipWindow from '../../components/TipWindow.vue';
 const router = useRouter()
 
@@ -70,27 +69,49 @@ const useLoginEffect = () => {
     let alertTip = ref('')
     let ShowTip = ref(false)
     const putLogin = async () => {
-        if (account.value === '' || password.value === '' || code.value === '') return;
-        let data = await goLogin({ username: account.value, password: password.value, captcha_code: code.value })
-        if (data.status === 1) {
-            alertTip.value = '登录成功'
-            ShowTip.value = true
-            setTimeout(() => {
-                ShowTip.value = false
-                alertTip.value = ''
-                router.push({
-                    name: 'index'
-                })
-            }, 3000)
-
-        } else {
-            alertTip.value = '登录失败'
+        //如果内容为空
+        if (account.value === '' || password.value === '' || code.value === '') {
+            alertTip.value = '内容不能为空'
             ShowTip.value = true
             setTimeout(() => {
                 ShowTip.value = false
                 alertTip.value = ''
             }, 3000)
+            return
         }
+        //如果网络或者服务端报错，进入catch
+        //否则为用户问题报错登录失败
+        try {
+            let data = await goLogin({ username: account.value, password: password.value, captcha_code: code.value })
+            if (data.status === 1) {
+                alertTip.value = '登录成功'
+                ShowTip.value = true
+                setTimeout(() => {
+                    ShowTip.value = false
+                    alertTip.value = ''
+                    router.push({
+                        name: 'index'
+                    })
+                }, 3000)
+
+            } else {
+                alertTip.value = '登录失败'
+                ShowTip.value = true
+                setTimeout(() => {
+                    ShowTip.value = false
+                    alertTip.value = ''
+                }, 3000)
+            }
+        } catch (err) {
+            alertTip.value = err.name
+            ShowTip.value = true
+            setTimeout(() => {
+                ShowTip.value = false
+                alertTip.value = ''
+            }, 3000)
+            return;
+        }
+
     }
     return {
         account,
@@ -134,19 +155,47 @@ const {
 
 
 // 获取验证码
-let codeImg = ref('')
-const reloadCode = () => {
-    getCode().then(data => codeImg.value = data.code)
+const useCodeEffect = () => {
+    let codeImg = ref('')
+    const useGetCode = async () => {
+        try {
+            let data = await getCode()
+            if (data.status === 1) {
+                codeImg.value = data.code
+            } else {
+                alertTip.value = '获取二维码失败'
+                ShowTip.value = true
+                setTimeout(() => {
+                    ShowTip.value = false
+                    alertTip.value = ''
+                }, 3000)
+            }
+        } catch (err) {
+            alertTip.value = err.name
+            ShowTip.value = true
+            setTimeout(() => {
+                ShowTip.value = false
+                alertTip.value = ''
+            }, 3000)
+            return;
+        }
+    }
+    return {
+        codeImg,
+        useGetCode
+    }
 }
 const {
-    getCode
+    codeImg,
+    useGetCode
 } = useCodeEffect()
 onMounted(() => {
-    getCode().then(data => codeImg.value = data.code)
+    useGetCode()
 })
 
-// 去往修改密码页面
 
+
+// 去往修改密码页面
 const goReset = () => {
     router.push({
         name: 'resetpassword'

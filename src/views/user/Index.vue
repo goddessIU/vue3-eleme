@@ -1,14 +1,14 @@
 <template>
-    <common-header>
-        <template #icon>
-            <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-left" />
-            </svg>
-        </template>
-
-        <template #title @click="goBack">{{ title }}</template>
-    </common-header>
     <div class="view">
+        <common-header>
+            <template #icon>
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-left" />
+                </svg>
+            </template>
+
+            <template #title @click="goBack">{{ title }}</template>
+        </common-header>
         <router-view></router-view>
     </div>
 </template>

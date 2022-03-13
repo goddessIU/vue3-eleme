@@ -7,7 +7,7 @@
             <span class="options__option--isChosed displayInlineBlock">商品</span>
         </div>
         <div class="options__evaluations">
-            <span class="">评价</span>
+            <span class>评价</span>
         </div>
     </div>
     <router-view></router-view>
@@ -15,20 +15,22 @@
 
 <script setup>
 import { useRoute } from 'vue-router';
-import instance from '../../config/fetchData';
 import ShopHeader from '../../components/ShopHeader.vue';
 import { useStore } from '../../store';
+import { getShopInfo } from '../../service/getData';
 const route = useRoute()
 const store = useStore()
 //得到当前商店的全部信息
-instance.get(`/shopping/v2/menu`, {
-    params: {
-        restaurant_id: route.query.shopId
+const useGetShopInfo = async () => {
+    try {
+        let data = await getShopInfo()
+        store.storeInfoData = data
+        store.currentStoreData = store.storesData[store.currentShopIndex] || {}
+    } catch (err) {
+        console.error(err)
     }
-}).then(data => {
-    store.storeInfoData = data
-    store.currentStoreData = store.storesData[store.currentShopIndex] || {}
-})
+}
+useGetShopInfo();
 </script>
 
 <style lang="scss" scoped>
@@ -46,13 +48,12 @@ instance.get(`/shopping/v2/menu`, {
         color: $fontColor;
         .displayInlineBlock {
             display: inline-block;
-            padding-bottom: .1875rem;
+            padding-bottom: 0.1875rem;
         }
     }
     .options__option--isChosed {
         color: $commonColor;
-        border-bottom: .1875rem solid $commonColor;
-
+        border-bottom: 0.1875rem solid $commonColor;
     }
 }
 </style>
