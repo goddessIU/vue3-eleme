@@ -16,7 +16,7 @@
                 </svg>
             </div>
         </div>
-        <div class="recommend__stores">
+        <div class="recommend__stores" v-if="store?.storesData?.status !== 0">
             <Store v-for="(storeData, index) in store.storesData" :key="index" :store-data="storeData"
             :index="index"/>
         </div>

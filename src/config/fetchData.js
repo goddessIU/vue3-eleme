@@ -1,4 +1,8 @@
 import axios from "axios";
+import { 
+    AxiosError,
+    TimeOutError
+} from '../Model/ErrorModel'
 
 //axios请求配置
 const env = process.env.NODE_ENV
@@ -10,17 +14,26 @@ switch (env) {
 }
 const instance = axios.create({
     baseURL: url,
-    timeout: 5000
+    timeout: 10
 });
 
 
 //设置响应拦截器
 instance.interceptors.response.use((response) => {
     if (response.status === 200) {
-        return response.data
+        if (response.data.status === 0) {
+            throw AxiosError()
+        } else {
+            return response.data
+        }
     } else {
-        console.error('请求失败')
+        throw AxiosError()
     }
+}, (error) => {
+    if (error.message.includes('timeout')) {
+        throw new TimeOutError()
+    }
+    throw new Error()
 })
 
 

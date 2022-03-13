@@ -1,7 +1,7 @@
 <template>
     <!-- 地址页面 -->
     <div class="searchPage">
-        <common-header class="stickyHeader" :class="{ 'sticky': isSticky }" :func="addAddress">
+        <common-header class="stickyHeader" :class="{ 'sticky': isSticky }">
             <template #icon>
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-left" />
@@ -9,7 +9,6 @@
             </template>
 
             <template #title @click="goBack">选择收获地址</template>
-            <template #application>新增地址</template>
         </common-header>
         <search-address :isSticky="isSticky"></search-address>
         <div class="currentAddress">
@@ -81,21 +80,13 @@ const changeRoute = () => {
             name: 'index'
         })
     }
-
-    const addAddress = () => {
-        router.push({
-            name: 'addAddress'
-        })
-    }
     return {
-        goIndex,
-        addAddress
+        goIndex
     }
 }
 
 const {
-    goIndex,
-    addAddress
+    goIndex
 } = changeRoute()
 
 //吸附功能实现

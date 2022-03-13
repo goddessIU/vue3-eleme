@@ -1,5 +1,9 @@
 // 获取数据
 import instance from '../config/fetchData'
+import {
+    AxiosError,
+    TimeOutError
+} from '../Model/ErrorModel'
 //获取二维码
 const useCodeEffect = () => {
     const getCode = () => {
@@ -27,15 +31,19 @@ const resetPassword = async (account, oldPass, newPass, reNewPass, code) => {
 
 
 // 登录
-const goLogin = async ({username, password, captcha_code}) => {
-    let data = await instance.post('/v2/login', {
-        data: {
-            username,
-            password,
-            captcha_code
-        }
-    })
-    return data
+const goLogin = async ({ username, password, captcha_code }) => {
+    try {
+        let data = await instance.post('/v2/login', {
+            data: {
+                username,
+                password,
+                captcha_code
+            }
+        })
+        return data
+    } catch (err) {
+        return err
+    }
 }
 
 

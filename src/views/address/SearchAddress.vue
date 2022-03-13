@@ -31,7 +31,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, defineProps } from 'vue';
 import instance from '../../config/fetchData';
 import _ from 'lodash';
 import { useStore } from '../../store';
@@ -44,13 +44,21 @@ const useSearchEffect = () => {
     let searchData = ref([])
     let showBar = ref(false)
     const getSearchInfo = async () => {
-        if (!keyword.value) {
-            showBar.value = false
-            return
+        try {
+            if (!keyword.value) {
+                showBar.value = false
+                return
+            }
+            let data = await instance.get(`/v1/pois?city_id=${store.cityData.id}&keyword=${keyword.value}&type=search`)
+            if (data.name === "ERROR_GET_POSITION") {
+                throw new Error('请求失败')
+            }
+            searchData.value = data
+            showBar.value = true
+            console.log(searchData.value)
+        } catch(err) {
+            console.error(err)
         }
-        searchData.value = await instance.get(`/v1/pois?city_id=${store.cityData.id}&keyword=${keyword.value}&type=search`)
-        showBar.value = true
-        console.log(searchData.value)
     }
     const toSearch = _.debounce(getSearchInfo, 500)
 

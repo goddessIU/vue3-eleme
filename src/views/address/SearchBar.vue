@@ -8,17 +8,18 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, defineProps } from 'vue';
 import { useStore } from '../../store';
 import { useRouter } from 'vue-router';
 import changeSearchColor from '../../utils/changeSearchColor'
 import getDistance from '../../utils/getDistance';
 
+const props = defineProps(['name', 'address', 'latitude', 'longitude', 'keyword'])
+const store = useStore()
+const router = useRouter()
 //用于得到渲染页面的值,以及路由，store，props
 const getValues = () => {
-    const props = defineProps(['name', 'address', 'latitude', 'longitude', 'keyword'])
-    const store = useStore()
-    const router = useRouter()
+
     const name = computed(() => {
         return changeSearchColor(props.name, props.keyword)
     })
@@ -31,10 +32,7 @@ const getValues = () => {
     return {
         name,
         address,
-        distance,
-        store,
-        props,
-        router
+        distance
     }
 }
 

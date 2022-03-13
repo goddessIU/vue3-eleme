@@ -19,13 +19,6 @@ const router = createRouter({
       component: () => import('../views/address/address.vue')
     },
     {
-      path: '/addAddress',
-      name: 'addAddress', meta: {
-        showFoot: true
-      },
-      component: () => import('../views/AddAddress.vue')
-    },
-    {
       path: '/shopIndex',
       name: 'shopIndex',
       meta: {
