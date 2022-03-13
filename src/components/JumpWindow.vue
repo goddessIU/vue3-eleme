@@ -7,8 +7,8 @@
             <div class="tip__content">
                 <slot name="content"></slot>
             </div>
-            
-            <button class="tip__button"  @click="closeWindow">
+
+            <button class="tip__button" @click="closeWindow">
                 <slot name="button">确定</slot>
             </button>
         </div>
@@ -16,8 +16,8 @@
 </template>
 
 <style lang="scss" scoped>
-@import '../style/config.scss';
-@import '../style/mixin.scss';
+@import "../style/config.scss";
+@import "../style/mixin.scss";
 .tip {
     width: 80vw;
     height: 30vh;
@@ -44,29 +44,28 @@
     .tip__button {
         @include button();
         width: 100%;
-
     }
 }
 .fade-enter-active,
 .fade-leave-active {
-  animation: bounce-in 0.5s;
+    animation: bounce-in 0.5s;
 }
 
 @keyframes bounce-in {
     0% {
-        transform: scale(0);
+        transform: translate(-50%, -60%) scale(0);
     }
     25% {
-        transform: scale(1.2);
+        transform: translate(-50%, -60%) scale(1.2);
     }
     50% {
-        transform: scale(0.8);
+        transform: translate(-50%, -60%) scale(0.8);
     }
     75% {
-        transform: scale(1.2);
+        transform: translate(-50%, -60%) scale(1.2);
     }
     100% {
-        transform: scale(1);
+        transform: translate(-50%, -60%) scale(1);
     }
 }
 </style>

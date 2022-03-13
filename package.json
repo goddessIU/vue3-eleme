@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.26.0",
+    "callapp-lib": "^3.5.1",
     "element-plus": "^2.0.4",
     "lodash": "^4.17.21",
     "node-xlsx": "^0.21.0",
