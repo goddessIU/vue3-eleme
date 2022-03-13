@@ -9,7 +9,7 @@
 
             <template #title @click="goBack">{{ headTitle }}</template>
             <template #application>
-                <span v-html="headApp"></span>
+                <span v-html="headApp" @click="goLogin"></span>
             </template>
         </common-header>
         <router-view></router-view>
@@ -35,9 +35,9 @@
 <script setup>
 import CommonHeader from '../../components/CommonHeader.vue';
 import { computed, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
+import router from '../../router';
 const route = useRoute()
-
 const headTitle = computed(() => {
     if (route.path.includes('orderpage')) {
         return '确认订单'
@@ -47,9 +47,17 @@ const headTitle = computed(() => {
         return '选择发票抬头'
     }
 })
+const goLogin = () => {
+    if (route.path === '/order/orderpage') {
+        router.push({
+            name: 'login'
+        })
+    }
+
+}
 const headApp = computed(() => {
     if (route.path.includes('orderpage')) {
-        return '<span>登录|注册</span>'
+        return `<span>登录|注册</span>`
     } else {
         return ''
     }

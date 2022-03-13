@@ -15,7 +15,7 @@
         </div>
     </div>
     <div class="serviceBlock">
-        <div class="serviceBlock__download">
+        <div class="serviceBlock__download" @click="goService">
             <span>服务中心</span>
             <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-right" />
@@ -73,6 +73,11 @@ const goLogin = () => {
 const goDownLoad = () => {
     router.push({
         name: 'download'
+    })
+}
+const goService = () => {
+    router.push({
+        name: 'service'
     })
 }
 </script>

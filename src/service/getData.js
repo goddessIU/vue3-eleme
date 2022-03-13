@@ -141,5 +141,15 @@ const getRecommend = async (index, offset) => {
     }
 }
 
-export { getCode, resetPassword, goLogin, searchKeyword, getLocation, getShopInfo, postCheckout, getRecommend }
+//获取服务中心问题列表
+const getService = async () => {
+    try {
+        let data = await instance.get('/v3/profile/explain')
+        return data
+    } catch (err) {
+        throw err
+    }
+
+}
+export { getCode, resetPassword, goLogin, searchKeyword, getLocation, getShopInfo, postCheckout, getRecommend, getService }
 

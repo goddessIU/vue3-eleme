@@ -1,7 +1,7 @@
 <template>
     <div class="store" @click="goStoreIndex">
         <div class="store__img">
-            <img :src="storeData.image_path" class="store__img__pic" onerror="this.classList.add('store__img__onerror')">
+            <img :src="`https://elm.cangdu.org/img/${storeData.image_path}`" onerror="this.classList.add('store__img__onerror')">
         </div>
         <div class="store__intro">
             <h1 class="store__title">{{storeData.name}}</h1>

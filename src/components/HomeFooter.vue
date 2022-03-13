@@ -24,10 +24,25 @@
 
 <script setup>
 import { useRoute, useRouter } from 'vue-router';
-import { ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 const route = useRoute()
 const router = useRouter()
+
+//判断选择下方哪个部分
 let choosedIndex = ref(0)
+const judgeChoosedIndex = () => {
+    if (route.path.includes('index')) {
+        choosedIndex.value = 0
+    } else if (route.path.includes('orderhome')) {
+        choosedIndex.value = 1
+    } else if (route.path.includes('user')) {
+        choosedIndex.value = 2
+    }
+    console.log(choosedIndex.value)
+}
+watch(() => route.path, judgeChoosedIndex)
+
+
 const goUser = () => {
     choosedIndex.value = 2
     router.push({

@@ -1,7 +1,7 @@
 <template>
     <div class="shopHeader">
         <div class="shopHeader__logo">
-            <img src="../assets/images/daigou.png" />
+            <img :src="`${imgPath}`" onerror="this.classList.add('store__logo__onerror')" />
         </div>
         <div class="shopHeader__intro">
             <div class="shopHeader__title">{{ storeCurrentData.name }}</div>
@@ -22,27 +22,35 @@
 @import "../style/config.scss";
 .shopHeader {
     height: 6rem;
-    background: linear-gradient(blue, pink);;
-    // background: url(../assets/images/dinner.png) no-repeat center;
-    background-size: contain;
+    max-width: 100vw;
+    overflow-x: hidden;
     box-sizing: border-box;
     padding: 0.5rem 1rem;
-    @include displayFlex(center, start);
+    @include displayFlex(center, space-between);
     .shopHeader__logo {
         width: 5rem;
         height: 5rem;
         img {
-            width: 100%;
-            height: 100%;
+            width: 5rem;
+            height: 5rem;
+        }
+        .store__logo__onerror {
+            background: url(../assets/images/userIcon.png) no-repeat center;
+            background-size: contain;
         }
     }
+
     .shopHeader__intro {
         margin-left: 2rem;
         height: 5rem;
         color: #fff;
+        max-width: 60vw;
+        width: 60vw;
+        overflow: hidden;
         .shopHeader__title {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: bold;
+            white-space: normal;
         }
         .shopHeader__tip {
             margin-top: 0.5rem;
@@ -54,7 +62,7 @@
         }
     }
     .shopHeader__icon {
-        height:5rem;
+        height: 5rem;
         line-height: 5rem;
         font-size: 3rem;
         color: #fff;
@@ -66,14 +74,16 @@
 
 <script setup>
 import { useStore } from '../store';
-import { computed, watch } from 'vue';
+import { computed, watch, ref } from 'vue';
 import { useRouter } from 'vue-router';
 const store = useStore()
 const router = useRouter()
 const storeCurrentData = computed(() => {
     return store.currentStoreData
 })
-
+const imgPath = computed(() => {
+    return `https://elm.cangdu.org/img/${store.currentStoreData.image_path}`
+})
 const goBack = () => {
     router.back();
 }

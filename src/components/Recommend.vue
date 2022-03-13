@@ -15,12 +15,12 @@
                 </div>
                 
             </div>
-            <div class="recommend__filter">
+            <!-- <div class="recommend__filter">
                 筛选
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-filter" />
                 </svg>
-            </div>
+            </div> -->
         </div>
         <div class="recommend__stores" v-if="store?.storesData?.status !== 0">
             <Store

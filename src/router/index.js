@@ -116,6 +116,24 @@ const router = createRouter({
       meta: {
         showFoot: true
       }
+    },
+    {
+      path: '/service',
+      name: 'service',
+      component: () => import('../views/service/Service.vue'),
+      redirect: '/service/index',
+      children: [
+        {
+          path: 'index',
+          name: 'serviceIndex',
+          component: () => import('../views/service/ServiceIndex.vue')
+        },
+        {
+          path: 'serviceAnswer',
+          name: 'serviceAnswer',
+          component: () => import('../views/service/ServiceAnswer.vue')
+        }
+      ]
     }
   ]
 })

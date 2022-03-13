@@ -25,7 +25,7 @@
                 >
                     <div class="right__item__content">
                         <div class="right__content__img">
-                            <img src="../../assets/images/userIcon.png" alt />
+                            <img :src="`https://elm.cangdu.org/img/${item2.image_path}`" alt />
                         </div>
                         <div class="right__content__intro">
                             <h1 class="right__content__title">{{ item2.name }}</h1>
