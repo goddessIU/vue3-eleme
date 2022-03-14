@@ -35,7 +35,11 @@ export const useStore = defineStore('index', {
             //用户信息
             userData: null,
             //地址信息列表
-            addressArrays: null
+            addressArrays: null,
+            //订单地址
+            finalAddress: null,
+            //备注
+            finalReMark: ''
         }
     },
     actions: {

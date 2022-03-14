@@ -144,6 +144,19 @@ const router = createRouter({
           component: () => import('../views/service/ServiceAnswer.vue')
         }
       ]
+    },
+    {
+      path: '/payment',
+      name: 'payment',
+      component: () => import('../views/payment/Index.vue'),
+      redirect: '/payment/paymentPage',
+      children: [
+        {
+          path: 'paymentPage',
+          name: 'paymentPage',
+          component: () => import('../views/payment/Page.vue')
+        }
+      ]
     }
   ]
 })

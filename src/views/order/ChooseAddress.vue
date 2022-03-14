@@ -1,6 +1,6 @@
 <template>
     <div class="addressBlock">
-        <div class="addressBlock__bar addressBlock__bar--isChosed" v-for="(address, index) in store.dataArrays">
+        <div class="addressBlock__bar" v-for="(address, index) in store.addressArrays" :class="{'addressBlock__bar--isChosed': isChoosed === index}" @click="changeChoosedAddress(index)">
             <span>{{address.name}}<span v-if="address.sex===1">先生</span>   <span v-else>女士</span>{{address.address}}</span>
             <span>{{address.phone}}</span>
         </div>
@@ -44,6 +44,7 @@ import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { getAddressList } from '../../service/getData'
 import { useStore } from '../../store/index'
+import { ref } from 'vue';
 const store = useStore()
 const router = useRouter()
 const goAddAddress = () => {
@@ -58,6 +59,7 @@ const toGetAddressList = async () => {
     try {
         let data = await getAddressList();
         store.addressArrays = data
+        console.log(data)
     } catch(err) {
         console.error(err)
     }
@@ -65,4 +67,12 @@ const toGetAddressList = async () => {
 onMounted(() => {
     toGetAddressList()
 })
+
+//选择地址
+let isChoosed = ref(0)
+const changeChoosedAddress = (index) => {
+    isChoosed.value = index
+    store.finalAddress = store.addressArrays[index]
+    router.back()
+}
 </script>

@@ -1,17 +1,30 @@
 <template>
     <!-- 增加收获地址方块 -->
     <div class="addAddress" @click="goChooseAddress">
-        <div class="addAddress__icon">
-            <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-address" />
-            </svg>
+        <div v-if="store.finalAddress">
+            <div class="addressBlock__bar">
+                <span>
+                    {{ store.finalAddress.name }}
+                    <span v-if="store.finalAddress.sex === 1">先生</span>
+                    <span v-else>女士</span>
+                    {{ store.finalAddress.address }}
+                </span>
+                <span>{{ store.finalAddress.phone }}</span>
+            </div>
         </div>
+        <div v-else>
+            <div class="addAddress__icon">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-address" />
+                </svg>
+            </div>
 
-        <div class="addAddress__content">请添加一个收获地址</div>
-        <div class="addAddress__arrow">
-            <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-right" />
-            </svg>
+            <div class="addAddress__content">请添加一个收获地址</div>
+            <div class="addAddress__arrow">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-right" />
+                </svg>
+            </div>
         </div>
     </div>
     <tip-window :show="show">
@@ -51,6 +64,9 @@ const goChooseAddress = () => {
     background-color: #fff;
     @include displayFlex();
     padding: 0 0.5rem;
+    .addressBlock__bar {
+        @include displayFlex(start, space-between, column);
+    }
     .addAddress__icon {
         font-size: 2rem;
     }

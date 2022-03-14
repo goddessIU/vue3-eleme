@@ -198,5 +198,32 @@ const getAddressList = async () => {
         throw err
     }
 }
-export { getCode, resetPassword, goLogin, searchKeyword, getLocation, getShopInfo, postCheckout, getRecommend, getService, postAddAddress, getAddressList }
+
+//提交订单
+const postOrder = async ({
+    user_id,
+    cart_id,
+    address_id,
+    restaurant_id,
+    description,
+    entities,
+    geohash
+}) => {
+    const store = useStore()
+    try {
+        let data = await instance.post(`/v1/users/${store.userData.user_id}/carts/${store.orderData.id}/orders`, {
+            user_id,
+            cart_id,
+            address_id,
+            restaurant_id,
+            description,
+            entities,
+            geohash
+        })
+        return data
+    } catch (err) {
+        throw err
+    }
+}
+export { getCode, resetPassword, goLogin, searchKeyword, getLocation, getShopInfo, postCheckout, getRecommend, getService, postAddAddress, getAddressList, postOrder }
 

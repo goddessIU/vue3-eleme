@@ -93,8 +93,11 @@
 </style>
 
 <script setup>
+import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router'
+import { useStore } from '../../store';
+const store = useStore()
 const router = useRouter()
 
 //输入框内容
@@ -153,6 +156,15 @@ const {
 
 //提交表单
 const pushForm = () => {
+    let str = ''
+    for (let i = 0; i <  controls.value.length; i++) {
+        let control = controls.value[i]
+        if (control.value !== -1) {
+            str += arrs.value[i][control.value]
+        }
+    }
+    str += textContent.value
+    store.finalReMark = str
     router.back()
 }
 </script>

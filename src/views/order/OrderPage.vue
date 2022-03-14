@@ -73,7 +73,10 @@
         <div class="order__detail__requests">
             <div class="order__detail__bar">
                 <span class="order__detail__name">订单备注</span>
-                <span class="order__detail__intro" @click="goReMark">口味、偏好等></span>
+                <span class="order__detail__intro" @click="goReMark">
+                    <span v-if="store.finalReMark">{{ store.finalReMark }}</span>
+                    <span v-else>口味、偏好等</span>>
+                </span>
             </div>
             <div class="order__detail__bar" v-if="store?.orderData?.invoice?.is_available">
                 <span class="order__detail__name">发票抬头</span>
@@ -86,11 +89,14 @@
     </div>
     <div class="orderFoot">
         <div class="orderFoot__left">待支付￥{{ store?.orderData?.cart?.total }}</div>
-        <button class="orderFoot__right">确认下单</button>
+        <button class="orderFoot__right" @click="pushOrder">确认下单</button>
     </div>
     <Teleport to="body">
         <PopUp :show="showBlock" @closeBlock="closeBlock" />
     </Teleport>
+    <tip-window :show="showOrderTip">
+        <template #content>下单失败</template>
+    </tip-window>
 </template>
 
 <style lang="scss" scoped>
@@ -233,11 +239,12 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
-import { postCheckout } from '../../service/getData'
+import { postCheckout, postOrder } from '../../service/getData'
 import AddAddressBlock from '../../components/AddAddressBlock.vue';
 import PopUp from '../../components/PopUp.vue';
 import { useStore } from '../../store/index'
 import { useRouter } from 'vue-router';
+import TipWindow from '../../components/TipWindow.vue';
 const router = useRouter()
 const store = useStore()
 
@@ -308,4 +315,32 @@ const {
     openBlock,
     closeBlock
 } = useShowBlock()
+
+//下单
+let showOrderTip = ref(false)
+const pushOrder = async () => {
+    try {
+        let data = await postOrder({
+            user_id: store.userData.user_id,
+            cart_id: store.orderData.id,
+            address_id: store.finalAddress.id,
+            restaurant_id: store.orderData.restaurant_id,
+            description: store.finalReMark,
+            entities: store.orderData.cart.groups,
+            geohash: ''
+        })
+        if (data.status === 1) {
+            router.push({
+                name: 'payment'
+            })
+        } else {
+            showOrderTip.value = true
+            setTimeout(() => {
+                showOrderTip.value = false
+            }, 3000)
+        }
+    } catch (err) {
+        console.error(err)
+    }
+}
 </script>
