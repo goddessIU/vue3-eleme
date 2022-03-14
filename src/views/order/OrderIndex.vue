@@ -49,6 +49,8 @@ const headTitle = computed(() => {
         return '编辑地址'
     } else if (route.path.includes('chooseAddress')) {
         return '选择地址'
+    } else if (route.path.includes('searchAddress')) {
+        return '搜索地址'
     }
 })
 const goLogin = () => {

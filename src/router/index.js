@@ -74,7 +74,7 @@ const router = createRouter({
           component: () => import('../views/order/Invoice.vue')
         },
         {
-          path: 'serachAddress',
+          path: 'searchAddress',
           name: 'searchAddress',
           component: () => import('../views/order/SearchAddress.vue')
         }

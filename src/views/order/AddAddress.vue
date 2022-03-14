@@ -4,7 +4,7 @@
             <form-item>
                 <template #name>联系人</template>
                 <template #input>
-                    <input type="text" class="form__input" placeholder="姓名" />
+                    <input type="text" class="form__input" placeholder="姓名" v-model="name"/>
                 </template>
                 <!-- <div class="form__labels">
                     <options-block>
@@ -21,29 +21,29 @@
             <form-item>
                 <template #name>电话</template>
                 <template #input>
-                    <input type="text" class="form__input" placeholder="手机号码" />
+                    <input type="number" class="form__input" placeholder="手机号码" v-model="phone"/>
                 </template>
             </form-item>
             <form-item>
                 <template #name>备用电话</template>
                 <template #input>
-                    <input type="text" class="form__input" placeholder="手机号码" />
+                    <input type="number" class="form__input" placeholder="手机号码" v-model="otherPhone"/>
                 </template>
             </form-item>
             <form-item>
                 <template #name>地址</template>
                 <template #input>
-                    <input type="text" class="form__input" placeholder="小区/写字楼/学校等" @focus="goSearchAddress"/>
+                    <input type="text" class="form__input" placeholder="小区/写字楼/学校等" @focus="goSearchAddress" v-model="address"/>
                 </template>
             </form-item>
             <form-item>
                 <template #name>详细地址</template>
                 <template #input>
-                    <input type="text" class="form__input" placeholder="10号楼5层501室222" />
+                    <input type="text" class="form__input" placeholder="10号楼5层501室222" v-model="detailAddress"/>
                 </template>
             </form-item>
             <div class="form__button">
-                <button>确定</button>
+                <button @click="putAddress">确定</button>
             </div>
         </div>
     </div>
@@ -94,8 +94,20 @@ import CommonHeader from '../../components/CommonHeader.vue';
 import FormItem from '../../components/FormItem.vue';
 import OptionsBlock from '../../components/OptionsBlock.vue';
 import { useRouter } from 'vue-router';
+import { useStore } from '../../store';
+import { ref } from 'vue';
 const router = useRouter()
 const goSearchAddress = () => {
     router.push('searchAddress')
+}
+const store = useStore()
+let address= ref(store.tempAddAddress.address)
+let name = ref('')
+let phone = ref('')
+let otherPhone = ref('')
+let detailAddress = ref('')
+const putAddress = () => {
+    // 相关逻辑
+    router.back()
 }
 </script>

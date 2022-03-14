@@ -23,7 +23,15 @@ export const useStore = defineStore('index', {
             //已购商品，用来展示购物车，所以去掉了中间反复嵌套的内容
             itemsObj: getAll('itemsObj') || {},
             //订单信息
-            orderData: {}
+            orderData: {},
+            //目前增加的地址
+            tempAddAddress: {
+                name: '',
+                phone: '',
+                otherPhone: '',
+                address: '',
+                detailAddress: ''
+            }
         }
     },
     actions: {
