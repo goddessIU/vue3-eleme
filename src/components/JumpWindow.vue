@@ -33,7 +33,7 @@
     @include displayFlex(center, space-between, column);
     .tip__icon {
         width: 100vw;
-        height: 30%;
+        height: 3rem;
         font-size: 5rem;
         margin: 0.5rem 0;
     }
