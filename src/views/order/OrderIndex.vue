@@ -45,6 +45,10 @@ const headTitle = computed(() => {
         return '订单备注'
     } else if (route.path.includes('invoice')) {
         return '选择发票抬头'
+    } else if (route.path.includes('fillAddress')) {
+        return '编辑地址'
+    } else if (route.path.includes('chooseAddress')) {
+        return '选择地址'
     }
 })
 const goLogin = () => {
@@ -53,7 +57,6 @@ const goLogin = () => {
             name: 'login'
         })
     }
-
 }
 const headApp = computed(() => {
     if (route.path.includes('orderpage')) {

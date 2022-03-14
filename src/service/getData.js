@@ -3,6 +3,7 @@ import instance from '../config/fetchData'
 import { set, get } from '../config/storage.js'
 import { useStore } from '../store/index'
 import { useRoute } from 'vue-router'
+import axios from 'axios'
 
 //获取二维码
 const getCode = async () => {
@@ -36,12 +37,30 @@ const resetPassword = async (account, oldPass, newPass, reNewPass, code) => {
 
 // 登录
 const goLogin = async ({ username, password, captcha_code }) => {
+    console.log(typeof username, typeof password, typeof captcha_code)
+    console.log(username, password, captcha_code)
     try {
-        let data = await instance.post('/v2/login', {
+        // let cookie = document.cookie
+        // console.log(cookie)
+        // let data = await instance.post('/v2/login', {
+        //     username,
+        //     password,
+        //     captcha_code
+        // })
+        let ax = axios.create({
+            baseURL: 'https://elm.cangdu.org/v2/login',
+            withCredentials: true
+        })
+        let data = await ax.post('', {
             username,
             password,
             captcha_code
         })
+        // let data = await axios.post('https://elm.cangdu.org/v2/login', {
+        //     username,
+        //     password,
+        //     captcha_code
+        // })
         return data
     } catch (err) {
         throw err

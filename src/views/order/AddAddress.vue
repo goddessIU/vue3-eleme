@@ -1,14 +1,5 @@
 <template>
     <div class="addaddress">
-        <common-header>
-            <template #icon>
-                <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-left" />
-                </svg>
-            </template>
-
-            <template #title @click="goBack">添加地址</template>
-        </common-header>
         <div class="form">
             <form-item>
                 <template #name>联系人</template>
@@ -34,31 +25,21 @@
                 </template>
             </form-item>
             <form-item>
+                <template #name>备用电话</template>
+                <template #input>
+                    <input type="text" class="form__input" placeholder="手机号码" />
+                </template>
+            </form-item>
+            <form-item>
                 <template #name>地址</template>
                 <template #input>
-                    <input type="text" class="form__input" placeholder="小区/写字楼/学校等" />
+                    <input type="text" class="form__input" placeholder="小区/写字楼/学校等" @focus="goSearchAddress"/>
                 </template>
             </form-item>
             <form-item>
-                <template #name>门牌号</template>
+                <template #name>详细地址</template>
                 <template #input>
                     <input type="text" class="form__input" placeholder="10号楼5层501室222" />
-                </template>
-            </form-item>
-            <form-item>
-                <template #name>标签</template>
-                <template #label>
-                    <div class="form__labels">
-                        <options-block>
-                            <template #content>家</template>
-                        </options-block>
-                        <options-block>
-                            <template #content>学校</template>
-                        </options-block>
-                        <options-block>
-                            <template #content>公司</template>
-                        </options-block>
-                    </div>
                 </template>
             </form-item>
             <div class="form__button">
@@ -69,8 +50,8 @@
 </template>
 
 <style lang="scss" scoped>
-@import "../style/config.scss";
-@import "../style/mixin.scss";
+@import "../../style/config.scss";
+@import "../../style/mixin.scss";
 
 .addaddress {
     background-color: $commonGray;
@@ -109,7 +90,12 @@
 </style>
 
 <script setup>
-import CommonHeader from '../components/CommonHeader.vue';
-import FormItem from '../components/FormItem.vue';
-import OptionsBlock from '../components/OptionsBlock.vue';
+import CommonHeader from '../../components/CommonHeader.vue';
+import FormItem from '../../components/FormItem.vue';
+import OptionsBlock from '../../components/OptionsBlock.vue';
+import { useRouter } from 'vue-router';
+const router = useRouter()
+const goSearchAddress = () => {
+    router.push('searchAddress')
+}
 </script>

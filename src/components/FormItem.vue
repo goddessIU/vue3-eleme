@@ -8,10 +8,10 @@
             <slot name="input">
             </slot>
         </div>
-        <div class="request__label" v-if="false">
+        <!-- <div class="request__label" v-if="false">
             <slot name="label">
             </slot>
-        </div>
+        </div> -->
     </div>
 </template>
 

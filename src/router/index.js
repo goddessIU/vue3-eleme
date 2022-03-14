@@ -54,9 +54,14 @@ const router = createRouter({
           component: () => import('../views/order/OrderPage.vue')
         },
         {
+          path: 'chooseAddress',
+          name: 'chooseAddress',
+          component: () => import('../views/order/ChooseAddress.vue')
+        },
+        {
           path: 'fillAddress',
           name: 'fillAddress',
-          component: () => import('../views/address/FillAddress.vue')
+          component: () => import('../views/order/AddAddress.vue')
         },
         {
           path: 'remark',
@@ -67,6 +72,11 @@ const router = createRouter({
           path: 'invoice',
           name: 'invoice',
           component: () => import('../views/order/Invoice.vue')
+        },
+        {
+          path: 'serachAddress',
+          name: 'searchAddress',
+          component: () => import('../views/order/SearchAddress.vue')
         }
       ]
     },

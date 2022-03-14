@@ -1,6 +1,6 @@
 <template>
     <!-- 增加收获地址方块 -->
-    <div class="addAddress" @click="goFillAddress">
+    <div class="addAddress" @click="goChooseAddress">
         <div class="addAddress__icon">
             <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-address" />
@@ -20,9 +20,9 @@
 import { useRouter } from 'vue-router';
 const router = useRouter()
 //前往填写地址的页面
-const goFillAddress = () => {
+const goChooseAddress = () => {
     router.push({
-        name: 'fillAddress'
+        name: 'chooseAddress'
     })
 }
 </script>

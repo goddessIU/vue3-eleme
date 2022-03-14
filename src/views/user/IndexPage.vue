@@ -15,6 +15,12 @@
         </div>
     </div>
     <div class="serviceBlock">
+        <div class="serviceBlock__download" @click="goChooseAddress">
+            <span>收货地址</span>
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-right" />
+            </svg>
+        </div>
         <div class="serviceBlock__download" @click="goService">
             <span>服务中心</span>
             <svg class="icon" aria-hidden="true">
@@ -78,6 +84,11 @@ const goDownLoad = () => {
 const goService = () => {
     router.push({
         name: 'service'
+    })
+}
+const goChooseAddress = () => {
+    router.push({
+        name: 'chooseAddress'
     })
 }
 </script>
