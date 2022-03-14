@@ -43,9 +43,6 @@ const {
 //用于处理点击搜索结果
 const clickBar = () => {
     store.addressData.address = props.name
-    router.push({
-        name: 'index'
-    })
 }
 </script>
 

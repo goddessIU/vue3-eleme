@@ -58,9 +58,10 @@ import LoginFormItem from '../../components/LoginFormItem.vue'
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { getCode, goLogin } from '../../service/getData'
+import { useStore } from '../../store/index'
 import TipWindow from '../../components/TipWindow.vue';
 const router = useRouter()
-
+const store = useStore()
 // 控制登录信息
 const useLoginEffect = () => {
     let account = ref('')
@@ -83,9 +84,10 @@ const useLoginEffect = () => {
         //否则为用户问题报错登录失败
         try {
             let data = await goLogin({ username: account.value, password: password.value, captcha_code: code.value })
-            if (data.status === 1) {
+            if (!data.status) {
                 alertTip.value = '登录成功'
                 ShowTip.value = true
+                store.userData = data
                 setTimeout(() => {
                     ShowTip.value = false
                     alertTip.value = ''

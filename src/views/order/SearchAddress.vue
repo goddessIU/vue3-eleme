@@ -33,7 +33,9 @@ import _ from 'lodash';
 import { useStore } from '../../store';
 import SearchBar from '../address/SearchBar.vue';
 import { searchKeyword } from '../../service/getData'
-import router from '../../router';
+import { useRouter, useRoute } from 'vue-router';
+const router = useRouter()
+
 //用于输入地址，获取本城市该地址信息
 const props = defineProps(['isSticky'])
 const useSearchEffect = () => {
@@ -77,7 +79,7 @@ const {
 const pushAddress = (index) => {
     const val = searchData?.value?.[index]?.name
     store.tempAddAddress.address = val
-    router.go(-1)
+    router.back()
 }
 </script>
 

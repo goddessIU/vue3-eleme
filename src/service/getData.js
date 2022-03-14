@@ -1,9 +1,10 @@
 // 获取数据
+//由于samesite策略，所以使用firefox可能会没问题
 import instance from '../config/fetchData'
 import { set, get } from '../config/storage.js'
-import { useStore } from '../store/index'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
+import { useStore } from '../store/index'
 
 //获取二维码
 const getCode = async () => {
@@ -36,31 +37,16 @@ const resetPassword = async (account, oldPass, newPass, reNewPass, code) => {
 
 
 // 登录
+
 const goLogin = async ({ username, password, captcha_code }) => {
     console.log(typeof username, typeof password, typeof captcha_code)
     console.log(username, password, captcha_code)
     try {
-        // let cookie = document.cookie
-        // console.log(cookie)
-        // let data = await instance.post('/v2/login', {
-        //     username,
-        //     password,
-        //     captcha_code
-        // })
-        let ax = axios.create({
-            baseURL: 'https://elm.cangdu.org/v2/login',
-            withCredentials: true
-        })
-        let data = await ax.post('', {
+        let data = await instance.post('/v2/login', {
             username,
             password,
             captcha_code
         })
-        // let data = await axios.post('https://elm.cangdu.org/v2/login', {
-        //     username,
-        //     password,
-        //     captcha_code
-        // })
         return data
     } catch (err) {
         throw err
@@ -168,7 +154,49 @@ const getService = async () => {
     } catch (err) {
         throw err
     }
-
 }
-export { getCode, resetPassword, goLogin, searchKeyword, getLocation, getShopInfo, postCheckout, getRecommend, getService }
+
+//增加地址
+const postAddAddress = async ({
+    user_id,
+    address,
+    address_detail,
+    geohash,
+    name,
+    phone,
+    tag,
+    sex,
+    tag_type,
+    phone_bk
+}) => {
+    try {
+        let data = await instance.post(`/v1/users/${user_id}/addresses`, {
+            user_id,
+            address,
+            address_detail,
+            geohash,
+            name,
+            phone,
+            tag,
+            sex,
+            tag_type,
+            phone_bk
+        })
+        return data
+    } catch (err) {
+        throw err
+    }
+}
+
+//获取地址信息列表
+const getAddressList = async () => {
+    const store = useStore()
+    try {
+        let data = await instance.get(`/v1/users/${store.userData.user_id}/addresses`)
+        return data
+    } catch (err) {
+        throw err
+    }
+}
+export { getCode, resetPassword, goLogin, searchKeyword, getLocation, getShopInfo, postCheckout, getRecommend, getService, postAddAddress, getAddressList }
 

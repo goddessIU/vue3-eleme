@@ -1,17 +1,29 @@
 <template>
     <div class="userBlock">
-        <div class="userBlock__login" @click="goLogin">
-            <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-user-circle" />
-            </svg>登录注册
-            <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-right" />
-            </svg>
+        <div class="userBlock__unLogin" v-if="store.userData">
+            <div class="userBlock__login" @click="goLogin">
+                <div>
+                    <img :src="`https://elm.cangdu.org/img/${store.userData.avatar}`">
+                    {{store.userData.username}}
+                </div>
+            </div>
+            <div class="userBlock__phone">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-phone" />
+                </svg>暂无绑定的手机号
+            </div>
         </div>
-        <div class="userBlock__phone">
-            <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-phone" />
-            </svg>暂无绑定的手机号
+        <div v-else>
+            <div class="userBlock__login" @click="goLogin">
+                <div>
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-user-circle" />
+                    </svg>登录注册
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-right" />
+                    </svg>
+                </div>
+            </div>
         </div>
     </div>
     <div class="serviceBlock">
@@ -49,6 +61,10 @@
         font-size: 1.2rem;
         height: 3rem;
         line-height: 3rem;
+        img {
+            width: 2rem;
+            height: 2rem;
+        }
     }
     .userBlock__phone {
         font-size: 1rem;
@@ -70,7 +86,9 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
+import { useStore } from '../../store';
 const router = useRouter()
+const store = useStore()
 const goLogin = () => {
     router.push({
         name: 'login'

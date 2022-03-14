@@ -31,12 +31,20 @@ export const useStore = defineStore('index', {
                 otherPhone: '',
                 address: '',
                 detailAddress: ''
-            }
+            },
+            //用户信息
+            userData: null,
+            //地址信息列表
+            addressArrays: null
         }
     },
     actions: {
         getOrderData(data) {
             this.orderData = data
+        },
+        //设置用户信息
+        setUserData(data) {
+            this.userData = data
         }
     },
     getters: {

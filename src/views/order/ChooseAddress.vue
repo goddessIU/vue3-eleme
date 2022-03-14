@@ -1,8 +1,8 @@
 <template>
     <div class="addressBlock">
-        <div class="addressBlock__bar addressBlock__bar--isChosed">
-            <span>聚宝源</span>
-            <span>111</span>
+        <div class="addressBlock__bar addressBlock__bar--isChosed" v-for="(address, index) in store.dataArrays">
+            <span>{{address.name}}<span v-if="address.sex===1">先生</span>   <span v-else>女士</span>{{address.address}}</span>
+            <span>{{address.phone}}</span>
         </div>
     </div>
     <div class="addressBlock__add" @click="goAddAddress">
@@ -40,11 +40,29 @@
 </style>
 
 <script setup> 
+import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { getAddressList } from '../../service/getData'
+import { useStore } from '../../store/index'
+const store = useStore()
 const router = useRouter()
 const goAddAddress = () => {
     router.push({
         name: 'fillAddress'
     })
 }
+
+
+//获取地址信息列表
+const toGetAddressList = async () => {
+    try {
+        let data = await getAddressList();
+        store.addressArrays = data
+    } catch(err) {
+        console.error(err)
+    }
+}
+onMounted(() => {
+    toGetAddressList()
+})
 </script>

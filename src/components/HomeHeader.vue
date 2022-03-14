@@ -14,17 +14,13 @@
                 </svg>
             </div>
             <div class="headTop__application">
-                <div class="headTop__application__signup" @click="toSignUp">登录|注册</div>
-                <!-- <div class="headTop__shopCart">
+                <div class="headTop__application__signup" @click="toSignUp" v-if="!store.userData">登录|注册</div>
+                <div class="headTop__application__signup" @click="goUser"  v-else>
                     <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-shop-cart-" />
-                    </svg>
+                        <use xlink:href="#icon-user"/>
+                    </svg> 
+                    {{c}}
                 </div>
-                <div class="headTop__message">
-                    <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-xiaoxi" />
-                    </svg>
-                </div> -->
             </div>
         </div>
         <div class="headSearch" :class="{ 'sticky': isSticky }">
@@ -35,13 +31,12 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted } from 'vue';
+import { computed, onMounted, onUnmounted } from 'vue';
 import useSticky from '../hooks/useSticky.js'
 import { useStore } from '../store/index'
 import { useRouter } from 'vue-router';
 
 const store = useStore()
-
 //设置吸附功能
 const { useStickyEffect, isSticky } = useSticky('.headTop');
 
@@ -61,6 +56,11 @@ const toAddress = () => {
 const toSignUp = () => {
     router.push({
         name: 'signup'
+    })
+}
+const goUser = () => {
+    router.push({
+        name: 'user'
     })
 }
 </script>

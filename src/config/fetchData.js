@@ -22,11 +22,7 @@ const instance = axios.create({
 //设置响应拦截器
 instance.interceptors.response.use((response) => {
     if (response.status === 200) {
-        if (response.data.status === 0) {
-            throw new AxiosError()
-        } else {
-            return response.data
-        }
+        return response.data
     } else {
         throw new AxiosError()
     }

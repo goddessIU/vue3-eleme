@@ -9,7 +9,12 @@
 
             <template #title @click="goBack">{{ headTitle }}</template>
             <template #application>
-                <span v-html="headApp" @click="goLogin"></span>
+                <span @click="goLogin" v-if="!store.userData">{{headApp}}</span>
+                <span v-else @click="goUser">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-user" />
+                    </svg>
+                </span>
             </template>
         </common-header>
         <router-view></router-view>
@@ -36,8 +41,10 @@
 import CommonHeader from '../../components/CommonHeader.vue';
 import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useStore } from '../../store';
 import router from '../../router';
 const route = useRoute()
+const store = useStore()
 const headTitle = computed(() => {
     if (route.path.includes('orderpage')) {
         return '确认订单'
@@ -60,11 +67,11 @@ const goLogin = () => {
         })
     }
 }
-const headApp = computed(() => {
-    if (route.path.includes('orderpage')) {
-        return `<span>登录|注册</span>`
-    } else {
-        return ''
+const goUser = () => {
+    if (route.path === '/order/orderpage') {
+        router.push({
+            name: 'user'
+        })
     }
-})
+}
 </script>
