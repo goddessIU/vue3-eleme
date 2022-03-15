@@ -225,5 +225,83 @@ const postOrder = async ({
         throw err
     }
 }
-export { getCode, resetPassword, goLogin, searchKeyword, getLocation, getShopInfo, postCheckout, getRecommend, getService, postAddAddress, getAddressList, postOrder }
+
+
+//获取评价标签
+const getEvaluationsTags = async () => {
+    const store = useStore()
+    try {
+        let data = await instance.get(`/ugc/v2/restaurants/${store.currentStoreData.id}/ratings/tags`, {
+            restaurant_id: store.currentStoreData.id
+        })
+        return data
+    } catch (err) {
+        throw err
+    }
+}
+
+
+//获取评价分数
+const getEvaluationsScores = async () => {
+    const store = useStore()
+    try {
+        let data = await instance.get(`/ugc/v2/restaurants/${store.currentStoreData.id}/ratings/scores`, {
+            restaurant_id: store.currentStoreData.id
+        })
+        return data
+    } catch (err) {
+        throw err
+    }
+}
+
+//获取评价信息
+const getEvaluationsMessages = async (tag_name, offset, limit) => {
+    const store = useStore()
+    try {
+        let data = await instance.get(`/ugc/v2/restaurants/${store.currentStoreData.id}/ratings`, {
+            restaurant_id: store.currentStoreData.id,
+            tag_name,
+            offset,
+            limit
+        })
+        return data
+    } catch (err) {
+        throw err
+    }
+}
+
+//获取订单列表
+const getOrderList = async ({ limit, offset }) => {
+    const store = useStore()
+    try {
+        let data = await instance.get(`/bos/v2/users/${store.userData.user_id}/orders`, {
+            params: {
+                user_id: store.userData.user_id,
+                limit,
+                offset
+            }
+        })
+        return data
+    } catch (err) {
+        throw err
+    }
+}
+
+//获取订单详情
+const getOrderDetail = async ({ order_id }) => {
+    const store = useStore()
+    try {
+        let data = await instance.get(`/bos/v1/users/${store.userData.user_id}/orders/${order_id}/snapshot`, {
+            params: {
+                user_id: store.userData, user_id,
+                order_id
+            }
+
+        })
+        return data
+    } catch (err) {
+        throw err
+    }
+}
+export { getCode, resetPassword, goLogin, searchKeyword, getLocation, getShopInfo, postCheckout, getRecommend, getService, postAddAddress, getAddressList, postOrder, getEvaluationsTags, getEvaluationsScores, getEvaluationsMessages, getOrderList, getOrderDetail }
 

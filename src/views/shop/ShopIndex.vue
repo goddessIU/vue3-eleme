@@ -8,10 +8,10 @@
         <ShopHeader :shopId="route.query.shopId" />
         <div class="options">
             <div class="options__items">
-                <span class="options__option--isChosed displayInlineBlock">商品</span>
+                <span class="displayInlineBlock" :class="{'options__option--isChosed': isChoosed===0}" @click="goItems">商品</span>
             </div>
             <div class="options__evaluations">
-                <span class>评价</span>
+                <span class @click="goEvaluation" :class="{'options__option--isChosed': isChoosed===1}">评价</span>
             </div>
         </div>
         <router-view></router-view>
@@ -19,13 +19,15 @@
 </template>
 
 <script setup>
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import ShopHeader from '../../components/ShopHeader.vue';
 import { useStore } from '../../store';
 import { getShopInfo } from '../../service/getData';
 import { ref } from 'vue';
 const route = useRoute()
+const router = useRouter()
 const store = useStore()
+let isChoosed = ref(0)
 
 //得到当前商店的全部信息
 let bgcImg = ref('')
@@ -40,6 +42,21 @@ const useGetShopInfo = async () => {
     }
 }
 useGetShopInfo();
+
+//去往评价页面
+const goEvaluation = () => {
+    isChoosed.value = 1
+    router.push({
+        name: 'shopEvaluation'
+    })
+}
+//去往商品页面
+const goItems = () => {
+    isChoosed.value = 0
+    router.push({
+        name: 'shopItems'
+    })
+}
 </script>
 
 <style lang="scss" scoped>

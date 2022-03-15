@@ -40,7 +40,17 @@ export const useStore = defineStore('index', {
             //订单地址
             finalAddress: null,
             //备注
-            finalReMark: ''
+            finalReMark: '',
+            //评价分类
+            evaluationTags: [],
+            //评价分数
+            evaluationScores: {},
+            //评价信息
+            evaluationMessages: [],
+            //订单列表
+            orderList: [],
+            //订单详情
+            orderDetail: {}
         }
     },
     actions: {

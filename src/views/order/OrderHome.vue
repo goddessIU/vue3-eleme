@@ -23,3 +23,11 @@ const headTitle = computed(() => {
     }
 })
 </script>
+
+<style lang="scss" scoped>
+@import '../../style/config.scss';
+.order {
+    background-color: $commonGray;
+    height: 100vh;
+}
+</style>

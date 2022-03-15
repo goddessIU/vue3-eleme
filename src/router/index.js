@@ -125,7 +125,20 @@ const router = createRouter({
       component: () => import('../views/order/OrderHome.vue'),
       meta: {
         showFoot: true
-      }
+      },
+      redirect: '/orderhome/list',
+      children: [
+        {
+          path: 'list',
+          name: 'list',
+          component: () => import('../views/order/List.vue')
+        },
+        {
+          path: 'detail',
+          name: 'detail',
+          component: () => import('../views/order/Detail.vue')
+        }
+      ]
     },
     {
       path: '/service',
