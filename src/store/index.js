@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { get, set, getAll } from '../config/storage'
+import { get, set, getAll, del } from '../config/storage'
 export const useStore = defineStore('index', {
     state: () => {
         return {
@@ -17,6 +17,7 @@ export const useStore = defineStore('index', {
             currentShopIndex: undefined,
             //当前购物车
             storageShop: {},
+            //规格选择
             specObj: {},
             //当前商店的id,因为结算是按店铺来分开算的
             currentShopId: undefined,
@@ -49,6 +50,17 @@ export const useStore = defineStore('index', {
         //设置用户信息
         setUserData(data) {
             this.userData = data
+        },
+        //支付成功，清空相关数据
+        clearData() {
+            let restaurant_id = this.orderData.cart.restaurant_id
+            this.orderData = {}
+            this.finalReMark = ''
+            del('shopCart', restaurant_id)
+            del('itemsObj', restaurant_id)
+            delete this.itemsObj[restaurant_id]
+            this.specObj = {}
+            delete this.storageShop[restaurant_id]
         }
     },
     getters: {

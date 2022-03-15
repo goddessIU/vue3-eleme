@@ -50,7 +50,7 @@
                     <use xlink:href="#icon-eleme" class="jump__Color" />
                 </svg>
             </template>
-            <template #content>{{jumpWindowContent}}</template>
+            <template #content>{{ jumpWindowContent }}</template>
             <template #button>关闭</template>
         </jump-window>
     </Teleport>
@@ -106,6 +106,10 @@
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import JumpWindow from '../../components/JumpWindow.vue'
 import { makeCountDonw } from '../../utils/countDown.js'
+import { useStore } from '../../store/index'
+import { useRouter } from 'vue-router'
+const store = useStore()
+const router = useRouter()
 let chooseWay = ref(0)
 const changeWay = () => {
     if (chooseWay.value === 0) {
@@ -121,6 +125,11 @@ const payPayment = () => {
     jumpWindowContent.value = '支付成功'
     ShowTip.value = true
     clearInterval(timer)
+    //支付成功，清除相关已付费的信息
+    store.clearData()
+    router.back()
+    unwatch()
+
 }
 const closeJumpWindowFunc = () => {
     ShowTip.value = false
@@ -132,7 +141,7 @@ let useCountDown = () => {
 
     //获取一个执行定时器的函数
     let execuateClock = () => {
-        let timeClock = makeCountDonw(0, 10, clockTime)
+        let timeClock = makeCountDonw(15, 0, clockTime)
         let timer = timeClock()
         return timer
     }
@@ -151,7 +160,7 @@ onMounted(() => {
     timer = execuateClock()
 })
 
-watch(clockTime, (newVal) => {
+const unwatch = watch(clockTime, (newVal) => {
     if (newVal === '00:00') {
         nextTick(() => {
             ShowTip.value = true
