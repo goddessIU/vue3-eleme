@@ -87,6 +87,7 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { useStore } from '../../store';
+
 const router = useRouter()
 const store = useStore()
 const goLogin = () => {

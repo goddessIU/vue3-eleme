@@ -97,6 +97,17 @@
     <tip-window :show="showOrderTip">
         <template #content>下单失败</template>
     </tip-window>
+    <Teleport to="body">
+        <jump-window @closeJumpWindow="closeJumpWindowFunc" :show="ShowTip">
+            <template #icon>
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-exclamation-circle-copy" />
+                </svg>
+            </template>
+            <template #content>请先登录</template>
+            <template #button>确定</template>
+        </jump-window>
+    </Teleport>
 </template>
 
 <style lang="scss" scoped>
@@ -241,6 +252,7 @@
 import { onMounted, ref } from 'vue';
 import { postCheckout, postOrder } from '../../service/getData'
 import AddAddressBlock from '../../components/AddAddressBlock.vue';
+import JumpWindow from '../../components/JumpWindow.vue';
 import PopUp from '../../components/PopUp.vue';
 import { useStore } from '../../store/index'
 import { useRouter } from 'vue-router';
@@ -319,6 +331,10 @@ const {
 //下单
 let showOrderTip = ref(false)
 const pushOrder = async () => {
+    if (!store.userData) {
+        ShowTip.value = false
+        return;
+    }
     try {
         let data = await postOrder({
             user_id: store.userData.user_id,
@@ -342,5 +358,10 @@ const pushOrder = async () => {
     } catch (err) {
         console.error(err)
     }
+}
+
+let ShowTip = ref(false)
+const closeJumpWindowFunc = () => {
+    ShowTip.value = true
 }
 </script>

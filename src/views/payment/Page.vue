@@ -1,7 +1,7 @@
 <template>
     <div class="paymentTime">
         <div class="paymentTime__title">剩余时间</div>
-        <div class="paymentTime__time">15:00</div>
+        <div class="paymentTime__time">{{ clockTime }}</div>
     </div>
     <div class="paymentWay">
         <div class="paymentWay__title">支付方式</div>
@@ -46,11 +46,11 @@
     <Teleport to="body">
         <jump-window @closeJumpWindow="closeJumpWindowFunc" :show="ShowTip">
             <template #icon>
-                <svg class="icon" aria-hidden="true"   >
+                <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-eleme" class="jump__Color" />
                 </svg>
             </template>
-            <template #content>支付成功</template>
+            <template #content>{{jumpWindowContent}}</template>
             <template #button>关闭</template>
         </jump-window>
     </Teleport>
@@ -103,8 +103,9 @@
 </style>
 
 <script setup>
-import { ref } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import JumpWindow from '../../components/JumpWindow.vue'
+import { makeCountDonw } from '../../utils/countDown.js'
 let chooseWay = ref(0)
 const changeWay = () => {
     if (chooseWay.value === 0) {
@@ -113,11 +114,49 @@ const changeWay = () => {
         chooseWay.value = 0
     }
 }
+let jumpWindowContent = ref('')
 let ShowTip = ref(false)
+let timer = null
 const payPayment = () => {
+    jumpWindowContent.value = '支付成功'
     ShowTip.value = true
+    clearInterval(timer)
 }
 const closeJumpWindowFunc = () => {
     ShowTip.value = false
 }
+
+//制作倒计时
+let useCountDown = () => {
+    let clockTime = ref('15:00')
+
+    //获取一个执行定时器的函数
+    let execuateClock = () => {
+        let timeClock = makeCountDonw(0, 10, clockTime)
+        let timer = timeClock()
+        return timer
+    }
+
+    return {
+        clockTime,
+        execuateClock
+    }
+}
+const {
+    clockTime,
+    execuateClock
+} = useCountDown()
+
+onMounted(() => {
+    timer = execuateClock()
+})
+
+watch(clockTime, (newVal) => {
+    if (newVal === '00:00') {
+        nextTick(() => {
+            ShowTip.value = true
+            jumpWindowContent.value = '时间已到，请重新下单'
+        })
+    }
+})
 </script>
