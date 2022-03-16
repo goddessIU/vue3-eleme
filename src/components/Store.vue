@@ -5,11 +5,11 @@
         </div>
         <div class="store__intro">
             <h1 class="store__title">{{storeData.name}}</h1>
-            <div class="store__rate">评分：{{storeData.rating}} 月售{{storeData.recent_order_num}}单</div>
+            <div class="store__rate">评分：{{storeData.rating}}  月售{{storeData.recent_order_num}}单</div>
             <div class="store__service">{{storeData?.piecewise_agent_fee?.tips}} {{storeData.distance}}|{{storeData.order_lead_time}}</div>
-            <div class="store__activity">
+            <!-- <div class="store__activity">
                 <span>活动</span>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>
@@ -17,12 +17,16 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { useStore } from '../store';
+
 const props = defineProps(['storeData', 'index'])
 const store = useStore()
 const router = useRouter()
+
+//点击之后去往store商家页面需要处理的逻辑
 const goStoreIndex = () => {
     store.currentShopIndex = props.index
     store.currentShopId = props.storeData.id
+
     router.push({
         name: 'shopIndex',
         query: {

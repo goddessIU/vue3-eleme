@@ -50,7 +50,9 @@ export const useStore = defineStore('index', {
             //订单列表
             orderList: [],
             //订单详情
-            orderDetail: {}
+            orderDetail: {},
+            //当前正在填写的地址表格数据
+            curAddress: {}
         }
     },
     actions: {
@@ -71,6 +73,13 @@ export const useStore = defineStore('index', {
             delete this.itemsObj[restaurant_id]
             this.specObj = {}
             delete this.storageShop[restaurant_id]
+        },
+        fillCurAddress({phone, name, detailAddress, tag, sex}) {
+            this.curAddress.phone = phone
+            this.curAddress.name = name
+            this.curAddress.detailAddress = detailAddress
+            this.curAddress.tag = tag
+            this.curAddress.sex = sex
         }
     },
     getters: {

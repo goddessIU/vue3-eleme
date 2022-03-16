@@ -8,10 +8,6 @@
             <slot name="input">
             </slot>
         </div>
-        <!-- <div class="request__label" v-if="false">
-            <slot name="label">
-            </slot>
-        </div> -->
     </div>
 </template>
 
@@ -23,7 +19,8 @@
     box-shadow: 0 0 2px #e5e6eb;
     background-color: $bgColor;
     .request__name {
-        width: 20vw;
+        width: 30vw;
+        font-size: 0.8rem;
         height: 3rem;
         line-height: 3rem;
         font-weight: bold;
@@ -31,10 +28,7 @@
         box-sizing: border-box;
     }
     .request__input {
-        width: 80vw;
-    }
-    .request__label {
-        width: 80vw;
+        width: 70vw;
     }
 }
 </style>

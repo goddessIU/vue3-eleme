@@ -1,7 +1,11 @@
 <template>
     <div class="block__option">
         <div class="block__option__name">不需要开发票</div>
-        <div class="block__option__icon" :class="{ 'block__option__icon--click': needInvoice }" @click="changeChoice">
+        <div
+            class="block__option__icon"
+            :class="{ 'block__option__icon--click': needInvoice }"
+            @click="changeChoice"
+        >
             <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-yes" />
             </svg>
@@ -46,13 +50,40 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-const router = useRouter()
-let needInvoice = ref(false)
-const changeChoice = () => {
-    needInvoice.value = !needInvoice.value
+
+//是否开发票
+const useNeedInvoice = () => {
+    let needInvoice = ref(false)
+    const changeChoice = () => {
+        needInvoice.value = !needInvoice.value
+    }
+
+    return {
+        needInvoice,
+        changeChoice
+    }
 }
-//提交表单
-const pushForm = () => {
-    router.back()
+const {
+    needInvoice,
+    changeChoice
+} = useNeedInvoice()
+
+
+const useRouterEffect = () => {
+    const router = useRouter()
+
+    //提交表单
+    const pushForm = () => {
+        router.back()
+    }
+
+    return {
+        router,
+        pushForm
+    }
 }
+const {
+    router,
+    pushForm
+} = useRouterEffect()
 </script>

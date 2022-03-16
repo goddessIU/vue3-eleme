@@ -54,12 +54,13 @@
 </template>
 
 <script setup>
-import LoginFormItem from '../../components/LoginFormItem.vue'
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { getCode, goLogin } from '../../service/getData'
 import { useStore } from '../../store/index'
+import { getCode, goLogin } from '../../service/getData'
 import TipWindow from '../../components/TipWindow.vue';
+import LoginFormItem from '../../components/LoginFormItem.vue'
+
 const router = useRouter()
 const store = useStore()
 // 控制登录信息
@@ -69,6 +70,7 @@ const useLoginEffect = () => {
     let code = ref('')
     let alertTip = ref('')
     let ShowTip = ref(false)
+
     const putLogin = async () => {
         //如果内容为空
         if (account.value === '' || password.value === '' || code.value === '') {
@@ -80,11 +82,12 @@ const useLoginEffect = () => {
             }, 3000)
             return
         }
+
         //如果网络或者服务端报错，进入catch
         //否则为用户问题报错登录失败
         try {
             let data = await goLogin({ username: account.value, password: password.value, captcha_code: code.value })
-            if (!data.status) {
+            if (data.status === undefined) {
                 alertTip.value = '登录成功'
                 ShowTip.value = true
                 store.userData = data
@@ -95,10 +98,10 @@ const useLoginEffect = () => {
                         name: 'index'
                     })
                 }, 3000)
-
             } else {
                 alertTip.value = '登录失败'
                 ShowTip.value = true
+                useGetCode()
                 setTimeout(() => {
                     ShowTip.value = false
                     alertTip.value = ''
@@ -107,14 +110,15 @@ const useLoginEffect = () => {
         } catch (err) {
             alertTip.value = err.name
             ShowTip.value = true
+            useGetCode()
             setTimeout(() => {
                 ShowTip.value = false
                 alertTip.value = ''
             }, 3000)
             return;
         }
-
     }
+
     return {
         account,
         password,
@@ -137,6 +141,7 @@ const {
 // 控制是否展示密码
 const usePasswordType = () => {
     let passwordType = ref('password')
+
     const showPassword = () => {
         if (passwordType.value === 'password') {
             passwordType.value = 'text'
@@ -144,6 +149,7 @@ const usePasswordType = () => {
             passwordType.value = 'password'
         }
     }
+
     return {
         passwordType,
         showPassword
@@ -159,6 +165,7 @@ const {
 // 获取验证码
 const useCodeEffect = () => {
     let codeImg = ref('')
+
     const useGetCode = async () => {
         try {
             let data = await getCode()
@@ -182,6 +189,7 @@ const useCodeEffect = () => {
             return;
         }
     }
+
     return {
         codeImg,
         useGetCode

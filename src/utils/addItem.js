@@ -4,6 +4,7 @@ import {
     set,
     getAll
 } from '../config/storage'
+
 //购买物品
 const store = useStore()
 const changeNum = ({secondIndex, firstIndex, operator, spec}) => {
@@ -25,6 +26,8 @@ const changeNum = ({secondIndex, firstIndex, operator, spec}) => {
     let skuId = undefined
     let skuname = ''
     let stock = undefined
+
+
     if (spec === null) {
         skuId = specFoods[0]['sku_id']
         stock = specFoods[0]['stock']
@@ -33,6 +36,8 @@ const changeNum = ({secondIndex, firstIndex, operator, spec}) => {
         stock  = specFoods[spec]['stock']
         skuname = specFoods[spec].specs[0].value
     }
+
+
     //创建对象
     let storageShop = get('shopCart', restaurantId)
     if (!storageShop) {
@@ -72,12 +77,14 @@ const changeNum = ({secondIndex, firstIndex, operator, spec}) => {
             foodObj.quantity = 0
         }
     }
+
     foodObj.attrs = chosedFood.attrs || []
     foodObj.extra = chosedFood.extra || {}
     foodObj.name = chosedSpecFood.name
     foodObj['packing_fee'] = chosedSpecFood['packing_fee']
     foodObj.price = chosedSpecFood.price
     const itemsObj = getAll('itemsObj')
+
     if (!itemsObj[restaurantId]) {
         itemsObj[restaurantId] = {}
     }
@@ -89,7 +96,6 @@ const changeNum = ({secondIndex, firstIndex, operator, spec}) => {
     set('shopCart', restaurantId, storageShop)
     store.storageShop = getAll('shopCart')
     store.itemsObj = getAll('itemsObj')
-    console.log(foodObj)
 }
 
 export default changeNum

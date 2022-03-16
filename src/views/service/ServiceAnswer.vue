@@ -1,17 +1,20 @@
 <template>
-    <div class="answer">{{answer}}</div>
+    <div class="answer">{{ answer }}</div>
 </template>
 
 
 <script setup>
 import { onMounted } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import { useRoute } from 'vue-router';
 import { ref } from 'vue';
 import { getService } from '../../service/getData'
-const route = useRoute()
+
+
 //得到问答内容
-let answer = ref('')
 const useQAContentsEffect = () => {
+    let answer = ref('')
+    const route = useRoute()
+    
     const getQA = async () => {
         let keyIndex = route.query.keyword * 2
         try {
@@ -22,12 +25,17 @@ const useQAContentsEffect = () => {
             console.error(err)
         }
     }
+
     return {
+        route,
+        answer,
         getQA
     }
 }
 const {
-    getQA
+    route,
+    getQA,
+    answer
 } = useQAContentsEffect()
 onMounted(() => {
     getQA()

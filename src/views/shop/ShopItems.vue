@@ -1,6 +1,9 @@
 <template>
     <div class="ScrollComponent" @click="closeShowSpec">
-        <SpecFoods v-if="showSpec" class="specFoods" @closeSpec="showSpec = !showSpec" />
+        <Teleport to="body">
+            <SpecFoods v-if="showSpec" class="specFoods" @closeSpec="showSpec = !showSpec" />
+        </Teleport>
+        
         <!-- 实现左右联动滚动 -->
         <div class="left" ref="leftWrapper">
             <div

@@ -28,6 +28,6 @@ const headTitle = computed(() => {
 @import '../../style/config.scss';
 .order {
     background-color: $commonGray;
-    height: 100vh;
+    height: 100%;
 }
 </style>

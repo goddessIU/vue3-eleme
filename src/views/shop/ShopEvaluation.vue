@@ -7,10 +7,13 @@
         </div>
         <div class="scoreBlock__detailScore">
             <span>
-                服务态度：<span class="scoreBlock__detailScore__num">{{store?.evaluationScores?.service_score.toFixed(1)}}</span>
+                服务态度：
+                <span class="scoreBlock__detailScore__num">{{
+                serviceScore }}</span>
             </span>
             <span>
-                菜品评价：<span class="scoreBlock__detailScore__num">{{store?.evaluationScores?.food_score.toFixed(1)}}</span>
+                菜品评价：
+                <span class="scoreBlock__detailScore__num">{{foodScore }}</span>
             </span>
         </div>
     </div>
@@ -18,14 +21,16 @@
 
 <script setup>
 import { useStore } from '../../store';
-import { getEvaluationsTags, getEvaluationsScores, getEvaluationsMessages } from '../../service/getData'
 import { onMounted, computed } from 'vue';
+import { getEvaluationsTags, getEvaluationsScores, getEvaluationsMessages } from '../../service/getData'
+
 const store = useStore()
 const useGetEvaluations = async () => {
     try {
         let data = await getEvaluationsTags()
         store.evaluationTags = data
         let scoreData = await getEvaluationsScores()
+        console.log(scoreData)
         store.evaluationScores = scoreData
         let messageData = await getEvaluationsMessages({
             tag_name: '全部',
@@ -42,14 +47,41 @@ onMounted(() => {
     useGetEvaluations()
 })
 
+//计算相关展示分数
+const computedScore = () => {
+    //分数
+    const overallScore = computed(() => {
+        return store.evaluationScores?.overall_score?.toFixed?.(1)
+    })
+    const highOthers = computed(() => {
+        return (store?.evaluationScores?.compare_rating * 100).toFixed(2)
+    })
+    const serviceScore = computed(() => {
+        if (store?.evaluationScores?.service_score) {
+            return store?.evaluationScores?.service_score.toFixed(1) 
+        } 
+        return 0
+    })
+    const foodScore = computed(() => {
+        if (store?.evaluationScores?.food_score) {
+            return store?.evaluationScores?.food_score.toFixed(1)
+        }
+        return 0
+    })
 
-//整体分数
-const overallScore = computed(() => {
-    return  store.evaluationScores?.overall_score?.toFixed?.(1)
-})
-const highOthers = computed(() => {
-    return (store?.evaluationScores?.compare_rating * 100).toFixed(2)
-})
+    return {
+        overallScore,
+        highOthers,
+        serviceScore,
+        foodScore
+    }
+}
+const {
+    overallScore,
+    highOthers,
+    serviceScore,
+    foodScore
+} = computedScore()
 </script>
 
 <style lang="scss" scoped>

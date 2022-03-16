@@ -9,7 +9,7 @@
 
             <template #title @click="goBack">{{ headTitle }}</template>
             <template #application>
-                <span @click="goLogin" v-if="!store.userData">{{headApp}}</span>
+                <span @click="goLogin" v-if="!store.userData">{{ headApp }}</span>
                 <span v-else @click="goUser">
                     <svg class="icon" aria-hidden="true">
                         <use xlink:href="#icon-user" />
@@ -38,40 +38,70 @@
 </style>
 
 <script setup>
-import CommonHeader from '../../components/CommonHeader.vue';
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useStore } from '../../store';
-import router from '../../router';
-const route = useRoute()
-const store = useStore()
-const headTitle = computed(() => {
-    if (route.path.includes('orderpage')) {
-        return '确认订单'
-    } else if (route.path.includes('remark')) {
-        return '订单备注'
-    } else if (route.path.includes('invoice')) {
-        return '选择发票抬头'
-    } else if (route.path.includes('fillAddress')) {
-        return '编辑地址'
-    } else if (route.path.includes('chooseAddress')) {
-        return '选择地址'
-    } else if (route.path.includes('searchAddress')) {
-        return '搜索地址'
-    }
-})
-const goLogin = () => {
-    if (route.path === '/order/orderpage') {
-        router.push({
-            name: 'login'
-        })
-    }
-}
-const goUser = () => {
-    if (route.path === '/order/orderpage') {
-        router.push({
-            name: 'user'
-        })
+import CommonHeader from '../../components/CommonHeader.vue';
+
+//头部展示信息
+const useShowHeadTitle = () => {
+    const route = useRoute()
+    const store = useStore()
+
+    const headTitle = computed(() => {
+        if (route.path.includes('orderpage')) {
+            return '确认订单'
+        } else if (route.path.includes('remark')) {
+            return '订单备注'
+        } else if (route.path.includes('invoice')) {
+            return '选择发票抬头'
+        } else if (route.path.includes('fillAddress')) {
+            return '编辑地址'
+        } else if (route.path.includes('chooseAddress')) {
+            return '选择地址'
+        } else if (route.path.includes('searchAddress')) {
+            return '搜索地址'
+        }
+    })
+    return {
+        route,
+        store,
+        headTitle
     }
 }
+const {
+    route,
+    store,
+    headTitle
+} = useShowHeadTitle()
+
+
+//路由相关逻辑
+const useRouterEffect = () => {
+    const router = useRouter()
+    const goLogin = () => {
+        if (route.path === '/order/orderpage') {
+            router.push({
+                name: 'login'
+            })
+        }
+    }
+    const goUser = () => {
+        if (route.path === '/order/orderpage') {
+            router.push({
+                name: 'user'
+            })
+        }
+    }
+    return {
+        router,
+        goUser,
+        goLogin
+    }
+}
+const {
+    router,
+    goUser,
+    goLogin
+} = useRouterEffect()
 </script>

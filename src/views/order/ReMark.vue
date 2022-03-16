@@ -93,18 +93,21 @@
 </style>
 
 <script setup>
-import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router'
 import { useStore } from '../../store';
+import xss from 'xss'
 const store = useStore()
 const router = useRouter()
 
-//输入框内容
-let textContent = ref('')
 
-// 选择选项
+
+//填写的信息
 const chooseFlag = () => {
+    //输入框内容
+    let textContent = ref('')
+
+    // 选择选项
     let hot = ref(-1)
     let hotArr = ref(['不要辣', '少要辣', '多要辣'])
     let ice = ref(-1)
@@ -125,6 +128,7 @@ const chooseFlag = () => {
         scallionArr.value,
         iceArr.value
     ])
+
     let controls = ref([
         hot,
         coriander,
@@ -141,16 +145,19 @@ const chooseFlag = () => {
             controls.value[firstIndex].value = secondIndex
         }
     }
+
     return {
         chooseOpt,
         controls,
-        arrs
+        arrs,
+        textContent
     }
 }
 const {
     chooseOpt,
     controls,
-    arrs
+    arrs,
+    textContent
 } = chooseFlag()
 
 
@@ -163,7 +170,7 @@ const pushForm = () => {
             str += arrs.value[i][control.value]
         }
     }
-    str += textContent.value
+    str += xss(textContent.value)
     store.finalReMark = str
     router.back()
 }

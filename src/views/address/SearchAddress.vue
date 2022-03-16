@@ -1,12 +1,12 @@
 <template>
     <!-- 地址页面中搜索部分 -->
     <div class="searchAddress">
-        <div class="searchAddress__options">
+        <!-- <div class="searchAddress__options">
             北京
             <svg class="icon headTop__address__down" aria-hidden="true">
                 <use xlink:href="#icon-down" />
             </svg>
-        </div>
+        </div> -->
         <div class="searchAddress__input">
             <input type="text" placeholder="请输入地址" @input="toSearch" v-model="keyword" />
         </div>

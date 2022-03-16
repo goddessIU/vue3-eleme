@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -132,11 +133,6 @@ const router = createRouter({
           path: 'list',
           name: 'list',
           component: () => import('../views/order/List.vue')
-        },
-        {
-          path: 'detail',
-          name: 'detail',
-          component: () => import('../views/order/Detail.vue')
         }
       ]
     },

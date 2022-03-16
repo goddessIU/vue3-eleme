@@ -285,7 +285,7 @@ const {
                 border-radius: 1.2rem;
                 left: 2.2rem;
                 color: #fff;
-                font-size: 0.3rem;
+                font-size: 0.6rem;
                 text-align: center;
                 line-height: 1.2rem;
             }

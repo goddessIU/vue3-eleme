@@ -27,7 +27,7 @@
             </div>
         </div>
         <!-- 需要得到用户信息，即登录才可以继续 -->
-        <div class="harvestAddress">
+        <!-- <div class="harvestAddress">
             <div class="harvestAddress__title">售后地址</div>
             <div class="harvestAddress__content">
                 <span class="harvestAddress__content__name">george</span>
@@ -35,7 +35,7 @@
                 <span class="harvestAddress__content__phone">110</span>
                 <span class="harvestAddress__content__location">北京</span>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 

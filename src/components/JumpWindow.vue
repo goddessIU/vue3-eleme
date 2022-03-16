@@ -20,7 +20,7 @@
 @import "../style/mixin.scss";
 .tip {
     width: 80vw;
-    height: 30vh;
+    height: 10rem;
     background-color: rgba(255, 255, 255);
     border-radius: 0.3rem;
     line-height: 3rem;
@@ -39,10 +39,12 @@
     }
     .tip__content {
         font-size: 1.2rem;
+        height: 2rem;
         color: $fontColor;
     }
     .tip__button {
         @include button();
+        height: 3rem;
         width: 100%;
     }
 }

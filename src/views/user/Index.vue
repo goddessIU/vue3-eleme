@@ -6,7 +6,6 @@
                     <use xlink:href="#icon-left" />
                 </svg>
             </template>
-
             <template #title @click="goBack">{{ title }}</template>
         </common-header>
         <router-view></router-view>
@@ -19,7 +18,6 @@ import { useRoute } from 'vue-router';
 import { ref } from 'vue';
 const route = useRoute()
 let title = ref('')
-console.log(route.path)
 if (route.path.includes('userpage')) {
     title.value = '我的'
 }

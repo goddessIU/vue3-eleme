@@ -37,9 +37,8 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { ref } from 'vue';
 import { getService } from '../../service/getData'
 
 //得到问答内容
@@ -72,15 +71,28 @@ onMounted(() => {
     getQA()
 })
 
-const router = useRouter()
-const goAnswer = (index) => {
-    router.push({
-        name: 'serviceAnswer',
-        query: {
-            keyword: `${index}`
-        }
-    })
+//处理路由相关
+const useRouterEffect = () => {
+    const router = useRouter()
+    const goAnswer = (index) => {
+        router.push({
+            name: 'serviceAnswer',
+            query: {
+                keyword: `${index}`
+            }
+        })
+    }
+
+    return {
+        router,
+        goAnswer
+    }
 }
+const {
+    router,
+    goAnswer
+} = useRouterEffect()
+
 </script>
 
 <style lang="scss" scoped>

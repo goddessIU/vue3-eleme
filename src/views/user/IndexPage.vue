@@ -1,10 +1,10 @@
 <template>
     <div class="userBlock">
         <div class="userBlock__unLogin" v-if="store.userData">
-            <div class="userBlock__login" @click="goLogin">
+            <div class="userBlock__login">
                 <div>
-                    <img :src="`https://elm.cangdu.org/img/${store.userData.avatar}`">
-                    {{store.userData.username}}
+                    <img :src="`https://elm.cangdu.org/img/${store.userData.avatar}`" />
+                    {{ store.userData.username }}
                 </div>
             </div>
             <div class="userBlock__phone">
@@ -88,26 +88,50 @@
 import { useRouter } from 'vue-router';
 import { useStore } from '../../store';
 
-const router = useRouter()
+//处理路由相关
+const useRouterEffect = () => {
+    const router = useRouter()
+
+    const goLogin = () => {
+        router.push({
+            name: 'login'
+        })
+    }
+
+    const goDownLoad = () => {
+        router.push({
+            name: 'download'
+        })
+    }
+
+    const goService = () => {
+        router.push({
+            name: 'service'
+        })
+    }
+
+    const goChooseAddress = () => {
+        router.push({
+            name: 'chooseAddress'
+        })
+    }
+
+    return {
+        goLogin,
+        goDownLoad,
+        goService,
+        goChooseAddress,
+        router
+    }
+}
+const {
+    goLogin,
+    goDownLoad,
+    goService,
+    goChooseAddress,
+    router
+} = useRouterEffect()
+
 const store = useStore()
-const goLogin = () => {
-    router.push({
-        name: 'login'
-    })
-}
-const goDownLoad = () => {
-    router.push({
-        name: 'download'
-    })
-}
-const goService = () => {
-    router.push({
-        name: 'service'
-    })
-}
-const goChooseAddress = () => {
-    router.push({
-        name: 'chooseAddress'
-    })
-}
+
 </script>

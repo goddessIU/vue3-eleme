@@ -3,7 +3,6 @@
 import instance from '../config/fetchData'
 import { set, get } from '../config/storage.js'
 import { useRoute } from 'vue-router'
-import axios from 'axios'
 import { useStore } from '../store/index'
 
 //获取二维码

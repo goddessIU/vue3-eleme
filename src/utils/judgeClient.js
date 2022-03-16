@@ -2,7 +2,6 @@
 //返回true为ios，否则不是
 function judgeClient() {
     let userAgent = navigator.userAgent
-    console.log(userAgent)
     if (userAgent.includes('iPhone')) {
         return true
     } else {

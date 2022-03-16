@@ -5,7 +5,6 @@
                 <use xlink:href="#icon-left" />
             </svg>
         </template>
-
         <template #title @click="goBack">{{headTitle}}</template>
     </common-header>
     <div class="view">
@@ -18,6 +17,7 @@
 import CommonHeader from '../../components/CommonHeader.vue';
 import { useRoute } from 'vue-router';
 import { computed } from 'vue';
+
 const route = useRoute()
 const headTitle = computed(() => {
     if (route.path.includes('login')) {

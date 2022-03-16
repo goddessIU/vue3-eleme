@@ -75,9 +75,11 @@ import { useRouter } from 'vue-router'
 //展示验证码
 const useCodeEffect = () => {
     let codeImg = ref('')
+
     const useGetCode = async () => {
         try {
             let data = await getCode()
+
             if (data.status === 1) {
                 codeImg.value = data.code
             } else {
@@ -119,6 +121,7 @@ const vModelData = () => {
     let newPass = ref('')
     let reNewPass = ref('')
     let code = ref('')
+
     return {
         account,
         oldPass,
@@ -140,6 +143,8 @@ const {
 const putForm = () => {
     let alertTip = ref('')
     let ShowTip = ref(false)
+    const router = useRouter()
+
     const toResetPassword = async () => {
         if (!account.value) {
             alertTip.value = '不能为空'
@@ -150,7 +155,18 @@ const putForm = () => {
             }, 3000)
             return;
         }
-        const router = useRouter()
+
+        if (newPass.value !== reNewPass.value) {
+            alertTip.value = '密码不一致'
+            ShowTip.value = true
+            setTimeout(() => {
+                ShowTip.value = false
+                alertTip.value = ''
+            }, 3000)
+            return;
+        }
+        
+
         try {
             let res = await resetPassword()
             if (res.status === 1) {
@@ -167,6 +183,8 @@ const putForm = () => {
             } else {
                 alertTip.value = '重置失败'
                 ShowTip.value = true
+                useGetCode()
+
                 setTimeout(() => {
                     ShowTip.value = false
                     alertTip.value = ''
@@ -175,6 +193,8 @@ const putForm = () => {
         } catch (err) {
             alertTip.value = err.name
             ShowTip.value = true
+            useGetCode()
+
             setTimeout(() => {
                 ShowTip.value = false
                 alertTip.value = ''
@@ -182,15 +202,18 @@ const putForm = () => {
             return;
         }
     }
+
     return {
         alertTip,
         ShowTip,
+        router,
         toResetPassword
     }
 }
 const {
     alertTip,
     ShowTip,
+    router,
     toResetPassword
 } = putForm()
 
@@ -199,6 +222,7 @@ const {
 //是否展示密码
 const usePasswordType = () => {
     let passwordType = ref('password')
+
     const showPassword = () => {
         if (passwordType.value === 'password') {
             passwordType.value = 'text'
@@ -206,6 +230,7 @@ const usePasswordType = () => {
             passwordType.value = 'password'
         }
     }
+
     return {
         passwordType,
         showPassword

@@ -13,7 +13,8 @@
             </div>
         </div>
         <div v-else>
-            <div class="addAddress__icon">
+            <div class="addAddress__showDefault">
+                <div class="addAddress__icon">
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-address" />
                 </svg>
@@ -25,6 +26,8 @@
                     <use xlink:href="#icon-right" />
                 </svg>
             </div>
+            </div>
+            
         </div>
     </div>
     <tip-window :show="show">
@@ -35,12 +38,16 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { useStore } from '../store';
-import TipWindow from './TipWindow.vue';
 import { ref } from 'vue';
+import TipWindow from './TipWindow.vue';
+
 const router = useRouter()
 const store = useStore()
+
+
 //判断是否可以去添加地址
 let show = ref(false)
+
 //前往填写地址的页面
 const goChooseAddress = () => {
     if (!store.userData) {
@@ -51,8 +58,6 @@ const goChooseAddress = () => {
         name: 'chooseAddress'
     })
 }
-
-
 
 </script>
 
@@ -66,6 +71,9 @@ const goChooseAddress = () => {
     padding: 0 0.5rem;
     .addressBlock__bar {
         @include displayFlex(start, space-between, column);
+    }
+    .addAddress__showDefault {
+        @include displayFlex();
     }
     .addAddress__icon {
         font-size: 2rem;

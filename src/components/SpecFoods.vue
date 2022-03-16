@@ -38,7 +38,8 @@
     height: 100%;
     background-color: blue;
     .SpecFoods {
-        width: 18rem;
+        // width: 18rem;
+        width: 80%;
         height: 12rem;
         background-color: #fff;
         z-index: 300;
@@ -99,15 +100,11 @@
                 color: $priceColor;
             }
             .SpecFoods__addCart__pushForm {
-                outline: none;
+                @include button();
                 height: 2rem;
-                border: none;
-                width: 45%;
-                background-color: $butColor;
-                font-size: 1rem;
-                color: #fff;
-                text-align: center;
-                font-weight: bold;
+                width: 40%;
+                line-height: 2rem;
+                font-size: 0.7rem;
             }
         }
     }

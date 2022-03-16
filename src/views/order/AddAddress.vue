@@ -10,7 +10,7 @@
             <form-item>
                 <template #name>电话</template>
                 <template #input>
-                    <input type="number" class="form__input" placeholder="手机号码" v-model="phone" />
+                    <input  class="form__input" placeholder="手机号码" v-model.number="phone"/>
                 </template>
             </form-item>
             <form-item>
@@ -46,8 +46,20 @@
             <form-item>
                 <template #name>性别</template>
                 <template #input>
-                    <input type="radio" :checked="sex === 1" value="1" name="sex" @click="chooseSex" />男
-                    <input type="radio" :checked="sex === 2" value="2" name="sex" @click="chooseSex" />女
+                    <input
+                        type="radio"
+                        :checked="sex === 1"
+                        value="1"
+                        name="sex"
+                        @click="chooseSex"
+                    />男
+                    <input
+                        type="radio"
+                        :checked="sex === 2"
+                        value="2"
+                        name="sex"
+                        @click="chooseSex"
+                    />女
                 </template>
             </form-item>
             <div class="form__button">
@@ -56,9 +68,7 @@
         </div>
     </div>
     <tip-window :show="showTip">
-        <template #content>
-            添加失败
-        </template>
+        <template #content>添加失败</template>
     </tip-window>
 </template>
 
@@ -110,52 +120,101 @@ import { postAddAddress } from '../../service/getData'
 import { useRouter } from 'vue-router';
 import { useStore } from '../../store';
 import { ref } from 'vue';
+import xss from 'xss'
 import TipWindow from '../../components/TipWindow.vue';
-const router = useRouter()
-const goSearchAddress = () => {
-    router.push('searchAddress')
+
+const useRouterEffect = () => {
+    const router = useRouter()
+    const goSearchAddress = () => {
+        store.fillCurAddress({
+            name: name.value,
+            detailAddress: detailAddress.value,
+            tag: tagStr.value,
+            sex: sex.value,
+            phone: phone.value
+        })
+        router.push('searchAddress')
+    }
+
+    return {
+        router,
+        goSearchAddress
+    }
 }
-const store = useStore()
-let address = ref(store.tempAddAddress.address)
-let name = ref('')
-let phone = ref('')
-let detailAddress = ref('')
-let sex = ref(1)
-// let tagArr = ref(['家', '学校', '公司'])
-// let tagIndex = ref(0)
-let tagStr = ref('')
-const putAddress = () => {
-    // 相关逻辑
-    router.back()
+const {
+    router,
+    goSearchAddress
+} = useRouterEffect()
+
+const initalData = () => {
+    const store = useStore()
+    let address = ref(store.tempAddAddress.address)
+    let name = ref(store.curAddress?.name || '')
+    let phone = ref(store.curAddress?.phone || '')
+    let detailAddress = ref(store.curAddress?.detailAddress || '')
+    let sex = ref(store.curAddress?.sex || 1)
+    let tagStr = ref(store.curAddress?.tag || '')
+
+    return {
+        store,
+        address,
+        name,
+        phone,
+        detailAddress,
+        sex,
+        tagStr
+    }
 }
+const {
+    store,
+    address,
+    name,
+    phone,
+    detailAddress,
+    sex,
+    tagStr
+} = initalData()
 
 const chooseSex = (e) => {
     if (e.target.type === 'radio') {
         sex.value = e.target.value
     }
 }
-//增加收获地址
-let showTip = ref(false)
-const toAddAddress = async () => {
-    let data = await postAddAddress({
-        user_id: store.userData.user_id,
-        address: address.value,
-        address_detail: detailAddress.value,
-        geohash: store.addressData.geohash,
-        name: name.value,
-        phone: phone.value,
-        tag: tagStr.value,
-        sex: sex.value,
-        tag_type: 1,
-        phone_bk: ''
-    })
-    if (data.status === 1) {
-        router.back()
-    } else {
-        showTip.value = true
-        setTimeout(() => {
-            showTip.value= false
-        }, 3000)
+
+//增加地址逻辑
+const useAddAddress = () => {
+    //增加收获地址
+    let showTip = ref(false)
+    const toAddAddress = async () => {
+        let data = await postAddAddress({
+            user_id: store.userData.user_id,
+            address: xss(address.value),
+            address_detail: xss(detailAddress.value),
+            geohash: store.addressData.geohash,
+            name: xss(name.value),
+            phone: xss(phone.value),
+            tag: xss(tagStr.value),
+            sex: xss(sex.value),
+            tag_type: 1,
+            phone_bk: ''
+        })
+        if (data.status === 1) {
+            router.back()
+        } else {
+            showTip.value = true
+            setTimeout(() => {
+                showTip.value = false
+            }, 3000)
+        }
+    }
+
+    return {
+        showTip,
+        toAddAddress
     }
 }
+const {
+    showTip,
+    toAddAddress
+} = useAddAddress()
 </script>

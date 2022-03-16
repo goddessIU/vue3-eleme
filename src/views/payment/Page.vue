@@ -103,39 +103,73 @@
 </style>
 
 <script setup>
-import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
-import JumpWindow from '../../components/JumpWindow.vue'
-import { makeCountDonw } from '../../utils/countDown.js'
+import { nextTick, onMounted, ref, watch } from 'vue'
 import { useStore } from '../../store/index'
 import { useRouter } from 'vue-router'
+import JumpWindow from '../../components/JumpWindow.vue'
+import { makeCountDonw } from '../../utils/countDown.js'
+
 const store = useStore()
 const router = useRouter()
-let chooseWay = ref(0)
-const changeWay = () => {
-    if (chooseWay.value === 0) {
-        chooseWay.value = 1
-    } else {
-        chooseWay.value = 0
+
+//选择哪种付费方式的逻辑
+const useChooseWayEffect = () => {
+    let chooseWay = ref(0)
+    const changeWay = () => {
+        if (chooseWay.value === 0) {
+            chooseWay.value = 1
+        } else {
+            chooseWay.value = 0
+        }
+    }
+
+    return {
+        chooseWay,
+        changeWay
     }
 }
-let jumpWindowContent = ref('')
-let ShowTip = ref(false)
-let timer = null
+const {
+    chooseWay,
+    changeWay
+} = useChooseWayEffect()
+
+//支付逻辑
 const payPayment = () => {
     jumpWindowContent.value = '支付成功'
     ShowTip.value = true
     clearInterval(timer)
     //支付成功，清除相关已付费的信息
     store.clearData()
-    router.back()
     unwatch()
+}
 
+//弹框相关逻辑
+const useJumpWindowEffect = () => {
+    let jumpWindowContent = ref('')
+    let ShowTip = ref(false)
+
+    const closeJumpWindowFunc = () => {
+        ShowTip.value = false
+        router.push({
+            name: 'index'
+        })
+    }
+
+    return {
+        jumpWindowContent,
+        ShowTip,
+        closeJumpWindowFunc
+    }
 }
-const closeJumpWindowFunc = () => {
-    ShowTip.value = false
-}
+const {
+    jumpWindowContent,
+    ShowTip,
+    closeJumpWindowFunc
+} = useJumpWindowEffect()
+
 
 //制作倒计时
+let timer = null
 let useCountDown = () => {
     let clockTime = ref('15:00')
 

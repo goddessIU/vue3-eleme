@@ -257,30 +257,44 @@ import PopUp from '../../components/PopUp.vue';
 import { useStore } from '../../store/index'
 import { useRouter } from 'vue-router';
 import TipWindow from '../../components/TipWindow.vue';
-const router = useRouter()
-const store = useStore()
 
-const currentShopId = store.currentShopId
-const itemsObj = store.itemsObj[currentShopId]
-const arr = []
-for (let foodId in itemsObj) {
-    const foodObj = itemsObj[foodId]
-    for (let itemId in foodObj) {
-        const item = foodObj[itemId]
-        arr.push({
-            attrs: item.attrs || [],
-            extra: item.extra || {},
-            id: item.foodId,
-            name: item.name,
-            packing_fee: item.packing_fee,
-            price: item.price,
-            quantity: item.quantity,
-            sku_id: item.sku_id,
-            specs: [item.specs],
-            stock: item.stock
-        })
+
+
+const initialFunc = () => {
+    const store = useStore()
+    const currentShopId = store.currentShopId
+    const itemsObj = store.itemsObj[currentShopId]
+    const arr = []
+    for (let foodId in itemsObj) {
+        const foodObj = itemsObj[foodId]
+        for (let itemId in foodObj) {
+            const item = foodObj[itemId]
+            arr.push({
+                attrs: item.attrs || [],
+                extra: item.extra || {},
+                id: item.foodId,
+                name: item.name,
+                packing_fee: item.packing_fee,
+                price: item.price,
+                quantity: item.quantity,
+                sku_id: item.sku_id,
+                specs: [item.specs],
+                stock: item.stock
+            })
+        }
+    }
+    return {
+        store,
+        currentShopId,
+        arr
     }
 }
+const {
+    store,
+    currentShopId,
+    arr
+} = initialFunc()
+
 
 //用来提交订单
 const usePostCheckout = async () => {
@@ -299,13 +313,29 @@ onMounted(() => {
     usePostCheckout()
 })
 
-const goReMark = () => {
-    router.push({ name: 'remark' })
-}
 
-const goInvoice = () => {
-    router.push({ name: 'invoice' })
+const useRouterEffect = () => {
+    const router = useRouter()
+
+    const goReMark = () => {
+        router.push({ name: 'remark' })
+    }
+
+    const goInvoice = () => {
+        router.push({ name: 'invoice' })
+    }
+
+    return {
+        router,
+        goInvoice,
+        goReMark
+    }
 }
+const {
+    router,
+    goInvoice,
+    goReMark
+} = useRouterEffect()
 
 // 展示payment block
 const useShowBlock = () => {
@@ -332,7 +362,7 @@ const {
 let showOrderTip = ref(false)
 const pushOrder = async () => {
     if (!store.userData) {
-        ShowTip.value = false
+        ShowTip.value = true
         return;
     }
     try {
@@ -360,8 +390,19 @@ const pushOrder = async () => {
     }
 }
 
-let ShowTip = ref(false)
-const closeJumpWindowFunc = () => {
-    ShowTip.value = true
+const useShowTip = () => {
+    let ShowTip = ref(false)
+    const closeJumpWindowFunc = () => {
+        ShowTip.value = false
+    }
+
+    return {
+        ShowTip,
+        closeJumpWindowFunc
+    }
 }
+const {
+    ShowTip,
+    closeJumpWindowFunc
+} = useShowTip()
 </script>

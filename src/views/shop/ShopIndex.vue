@@ -1,17 +1,22 @@
 
 <template>
-    <div
-        class="shopTotal"
-        :style="{ backgroundImage: `url(${bgcImg})` }"
-    >
+    <div class="shopTotal" :style="{ backgroundImage: `url(${bgcImg})` }">
         <!-- 本页面为店铺首页 -->
         <ShopHeader :shopId="route.query.shopId" />
         <div class="options">
             <div class="options__items">
-                <span class="displayInlineBlock" :class="{'options__option--isChosed': isChoosed===0}" @click="goItems">商品</span>
+                <span
+                    class="displayInlineBlock"
+                    :class="{ 'options__option--isChosed': isChoosed === 0 }"
+                    @click="goItems"
+                >商品</span>
             </div>
             <div class="options__evaluations">
-                <span class @click="goEvaluation" :class="{'options__option--isChosed': isChoosed===1}">评价</span>
+                <span
+                    class
+                    @click="goEvaluation"
+                    :class="{ 'options__option--isChosed': isChoosed === 1 }"
+                >评价</span>
             </div>
         </div>
         <router-view></router-view>
@@ -19,44 +24,80 @@
 </template>
 
 <script setup>
+import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import ShopHeader from '../../components/ShopHeader.vue';
 import { useStore } from '../../store';
+import ShopHeader from '../../components/ShopHeader.vue';
 import { getShopInfo } from '../../service/getData';
-import { ref } from 'vue';
-const route = useRoute()
-const router = useRouter()
-const store = useStore()
-let isChoosed = ref(0)
 
-//得到当前商店的全部信息
-let bgcImg = ref('')
-const useGetShopInfo = async () => {
-    try {
-        let data = await getShopInfo()
-        store.storeInfoData = data
-        store.currentStoreData = store.storesData[store.currentShopIndex] || {}
-        bgcImg.value = `https://elm.cangdu.org/img/${store.currentStoreData.image_path}`
-    } catch (err) {
-        console.error(err)
+const route = useRoute()
+const store = useStore()
+
+//获取商店信息以及图片
+const useToGetShopInfo = () => {
+    //得到当前商店的全部信息
+    let bgcImg = ref('')
+    
+
+    const useGetShopInfo = async () => {
+        try {
+            let data = await getShopInfo()
+            store.storeInfoData = data
+            store.currentStoreData = store.storesData[store.currentShopIndex] || {}
+            bgcImg.value = `https://elm.cangdu.org/img/${store.currentStoreData.image_path}`
+        } catch (err) {
+            console.error(err)
+        }
+    }
+    return {
+        bgcImg,
+        useGetShopInfo
     }
 }
-useGetShopInfo();
+const {
+    bgcImg,
+    useGetShopInfo
+} = useToGetShopInfo()
+onMounted(() => {
+    useGetShopInfo();
+})
 
-//去往评价页面
-const goEvaluation = () => {
-    isChoosed.value = 1
-    router.push({
-        name: 'shopEvaluation'
-    })
+
+//路由逻辑
+const useRouterEffect = () => {
+    let isChoosed = ref(0)
+    const router = useRouter()
+
+    //去往评价页面
+    const goEvaluation = () => {
+        isChoosed.value = 1
+        router.push({
+            name: 'shopEvaluation'
+        })
+    }
+
+    //去往商品页面
+    const goItems = () => {
+        isChoosed.value = 0
+        router.push({
+            name: 'shopItems'
+        })
+    }
+
+    return {
+        router,
+        goEvaluation,
+        goItems,
+        isChoosed
+    }
 }
-//去往商品页面
-const goItems = () => {
-    isChoosed.value = 0
-    router.push({
-        name: 'shopItems'
-    })
-}
+const {
+    router,
+    goEvaluation,
+    goItems,
+    isChoosed
+} = useRouterEffect()
+
 </script>
 
 <style lang="scss" scoped>

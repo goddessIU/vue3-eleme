@@ -5,7 +5,6 @@
         </div>
         <div class="shopHeader__intro">
             <div class="shopHeader__title">{{ storeCurrentData.name }}</div>
-            <!-- <div class="shopHeader__tip">{{storeCurrentData.}}</div> -->
             <div class="shopHeader__annoucement">公告：{{ storeCurrentData.promotion_info }}</div>
         </div>
         <div class="shopHeader__icon" @click="goBack">
@@ -13,7 +12,6 @@
                 <use xlink:href="#icon-right" />
             </svg>
         </div>
-        <!-- <div class="shopHeader_activities"></div> -->
     </div>
 </template>
 
@@ -74,7 +72,7 @@
 
 <script setup>
 import { useStore } from '../store';
-import { computed, watch, ref } from 'vue';
+import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 const store = useStore()
 const router = useRouter()
@@ -84,14 +82,10 @@ const storeCurrentData = computed(() => {
 const imgPath = computed(() => {
     return `https://elm.cangdu.org/img/${store.currentStoreData.image_path}`
 })
+
 const goBack = () => {
-    router.back();
+    router.push({
+        name: 'index'
+    })
 }
-// watch(
-//     () => store.storesData[props.shopId],
-//     (newValue) => {
-//         store.currentStoreData = newValue || {}
-//         console.log(store.currentStoreData)
-//     }
-// )
 </script>
