@@ -1,5 +1,7 @@
 <template>
+    <vue-simple-spinner size="medium" v-show="store.showLoading" />
     <div class="scoreBlock">
+        
         <div class="scoreBlock__totalScore">
             <span class="scoreBlock__totalScore__num">{{ overallScore }}</span>
             <span class="scoreBlock__totalScore__title">综合评价</span>
@@ -27,17 +29,19 @@ import { getEvaluationsTags, getEvaluationsScores, getEvaluationsMessages } from
 const store = useStore()
 const useGetEvaluations = async () => {
     try {
+        store.openLoading()
         let data = await getEvaluationsTags()
         store.evaluationTags = data
         let scoreData = await getEvaluationsScores()
-        console.log(scoreData)
         store.evaluationScores = scoreData
+        store.closeLoading()
         let messageData = await getEvaluationsMessages({
             tag_name: '全部',
             offset: 0,
             limit: 10
         })
         store.evaluationMessages = messageData
+        
     } catch (err) {
         console.error(err)
     }

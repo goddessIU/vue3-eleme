@@ -1,4 +1,5 @@
 <template>
+    
     <div class="orderBlock" v-for="orderObj in store.orderList">
         <div class="orderBlock__first">
             <div class="orderBlock__first__left">
@@ -9,6 +10,7 @@
         </div>
         <div class="orderBlock__money">￥{{ orderObj?.total_amount }}</div>
     </div>
+    <vue-simple-spinner size="medium" v-show="store.showLoading" />
     <tip-window :show="ShowTip">
         <template #content>请先登录</template>
     </tip-window>
@@ -69,7 +71,9 @@ const useToGetOrderList = () => {
             //到底无法下拉
             if (!canGetOrderList.value) return
 
-            let data =  await getOrderList({
+            store.openLoading()
+
+            let data = await getOrderList({
                 limit,
                 offset
             })
@@ -83,6 +87,8 @@ const useToGetOrderList = () => {
             } else {
                 store.orderList.push(...data)
             }
+
+            store.closeLoading()
             offset += 10
         } catch (err) {
             console.error(err)

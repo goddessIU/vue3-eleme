@@ -17,17 +17,21 @@ import getDistance from '../../utils/getDistance';
 const props = defineProps(['name', 'address', 'latitude', 'longitude', 'keyword'])
 const store = useStore()
 const router = useRouter()
+
 //用于得到渲染页面的值,以及路由，store，props
 const getValues = () => {
     const name = computed(() => {
         return changeSearchColor(props.name, props.keyword)
     })
+
     const address = computed(() => {
         return changeSearchColor(props.address, props.keyword)
     })
+
     const distance = computed(() => {
         return getDistance(parseFloat(store.addressData.latitude), parseFloat(store.addressData.longitude), parseFloat(props.latitude), parseFloat(props.longitude))
     })
+
     return {
         name,
         address,
@@ -43,6 +47,7 @@ const {
 //用于处理点击搜索结果
 const clickBar = () => {
     store.addressData.address = props.name
+    router.back()
 }
 </script>
 

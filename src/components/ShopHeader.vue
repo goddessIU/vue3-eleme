@@ -1,7 +1,7 @@
 <template>
     <div class="shopHeader">
         <div class="shopHeader__logo">
-            <img :src="`${imgPath}`" onerror="this.classList.add('store__logo__onerror')" />
+            <img :src="`${imgPath}`" />
         </div>
         <div class="shopHeader__intro">
             <div class="shopHeader__title">{{ storeCurrentData.name }}</div>

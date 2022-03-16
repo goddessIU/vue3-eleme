@@ -1,5 +1,6 @@
 <template>
     <!-- 首页店铺部分 -->
+    <vue-simple-spinner size="medium" v-show="store.showLoading" />
     <div class="recommend">
         <h1 class="recommend__title">——商家——</h1>
         <div class="recommend__options">
@@ -110,13 +111,16 @@ const {
 
 //选择option之后进行相应逻辑功能
 const useChooseOption = () => {
+    
     let optionsArr = ref(['按起送价排序', '按配送速度排序', '按评分排序', '综合排序', '按距离排序', '按销量排序', '综合排序'])
     let curIndex = ref(3)
 
     const chooseOption = async (index, offset = 0) => {
+        store.openLoading()
         curIndex.value = index
         await getRecommend(index + 1, offset)
         showOptionsValue.value = false
+        store.closeLoading()
     }
 
     return {

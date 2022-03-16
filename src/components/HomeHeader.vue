@@ -92,6 +92,10 @@ const {
 @import "../style/mixin.scss";
 .head {
     background-color: $commonColor;
+    // padding: 0 0.8rem;
+    max-width: 100vw;
+    box-sizing: border-box;
+    overflow-x: hidden;
     .headTop {
         @include displayFlex(center, space-between);
         .headTop__address {
@@ -157,7 +161,7 @@ const {
         .headSearch__brand {
             color: #fff;
             background-color: $commonColor;
-            width: 100%;
+            width: 100vw;
         }
     }
 

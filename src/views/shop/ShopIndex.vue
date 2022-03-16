@@ -1,8 +1,10 @@
 
 <template>
+    
     <div class="shopTotal" :style="{ backgroundImage: `url(${bgcImg})` }">
         <!-- 本页面为店铺首页 -->
         <ShopHeader :shopId="route.query.shopId" />
+        <vue-simple-spinner size="medium" v-show="store.showLoading" />
         <div class="options">
             <div class="options__items">
                 <span
@@ -19,7 +21,9 @@
                 >评价</span>
             </div>
         </div>
-        <router-view></router-view>
+        <div class="view">
+            <router-view></router-view>
+        </div>
     </div>
 </template>
 
@@ -37,14 +41,19 @@ const store = useStore()
 const useToGetShopInfo = () => {
     //得到当前商店的全部信息
     let bgcImg = ref('')
-    
+
 
     const useGetShopInfo = async () => {
         try {
+            store.openLoading()
+
             let data = await getShopInfo()
+
             store.storeInfoData = data
             store.currentStoreData = store.storesData[store.currentShopIndex] || {}
             bgcImg.value = `https://elm.cangdu.org/img/${store.currentStoreData.image_path}`
+
+            store.closeLoading()
         } catch (err) {
             console.error(err)
         }
@@ -59,9 +68,8 @@ const {
     useGetShopInfo
 } = useToGetShopInfo()
 onMounted(() => {
-    useGetShopInfo();
+    useGetShopInfo()
 })
-
 
 //路由逻辑
 const useRouterEffect = () => {
@@ -98,6 +106,7 @@ const {
     isChoosed
 } = useRouterEffect()
 
+
 </script>
 
 <style lang="scss" scoped>
@@ -127,6 +136,10 @@ const {
             color: $commonColor;
             border-bottom: 0.1875rem solid $commonColor;
         }
+    }
+    .view {
+        height: 100%;
+        background-color: #fff;
     }
 }
 </style>

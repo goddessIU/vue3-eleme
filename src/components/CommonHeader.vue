@@ -31,7 +31,7 @@ const goBack = () => {
 @import "../style/config.scss";
 @import '../style/mixin.scss';
 .commonHead {
-    padding: 0 0.5rem;
+    padding: 0 1rem;
     color: $bgColor;
     height: 3rem;
     background-color: $commonColor;

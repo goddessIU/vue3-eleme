@@ -52,7 +52,9 @@ export const useStore = defineStore('index', {
             //订单详情
             orderDetail: {},
             //当前正在填写的地址表格数据
-            curAddress: {}
+            curAddress: {},
+            //是否展示loading
+            showLoading: false
         }
     },
     actions: {
@@ -80,6 +82,12 @@ export const useStore = defineStore('index', {
             this.curAddress.detailAddress = detailAddress
             this.curAddress.tag = tag
             this.curAddress.sex = sex
+        },
+        closeLoading() {
+            this.showLoading = false
+        },
+        openLoading() {
+            this.showLoading = true
         }
     },
     getters: {
