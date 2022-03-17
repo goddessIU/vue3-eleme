@@ -4,3 +4,6 @@
 
 ## 相关说明
 css采用BEM命名，参考了http://getbem.com/， 应用了scss
+
+## 项目部署到
+https://goddessiu.github.io/
