@@ -25,8 +25,8 @@ const router = createRouter({
       meta: {
         showFoot: false
       },
-      component: () => import('../views/shop/ShopIndex.vue'),
       redirect: '/shopIndex/shopItems',
+      component: () => import('../views/shop/ShopIndex.vue'),
       children: [
         {
           path: 'shopItems',

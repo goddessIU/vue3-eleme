@@ -5,13 +5,17 @@ import {
 } from '../Model/ErrorModel'
 
 //axios请求配置
-const env = process.env.NODE_ENV
-let url = undefined
-switch (env) {
-    case 'development':
-        url = 'https://elm.cangdu.org';
-        break;
-}
+// const env = process.env.NODE_ENV
+let url =  'https://elm.cangdu.org'
+// let url = undefined
+// console.log(process.env.NODE_ENV)
+// switch (env) {
+//     case 'development':
+//         url = 'https://elm.cangdu.org';
+//         break;
+    
+// }
+
 const instance = axios.create({
     baseURL: url,
     timeout: 5000,

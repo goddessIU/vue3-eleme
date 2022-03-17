@@ -21,4 +21,13 @@ export default defineConfig({
     }
 
   }
+  // server: {
+  //   proxy: {
+  //     '/': {
+  //       target: 'https://elm.cangdu.org',
+  //       changeOrigin: true
+  //     }
+  //   }
+  // }
 })
+
