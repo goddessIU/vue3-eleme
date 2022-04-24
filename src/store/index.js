@@ -9,7 +9,7 @@ export const useStore = defineStore('index', {
             storesData: {},
             //城市信息
             cityData: {},
-            //
+            //店铺食物信息
             storeInfoData: {},
             //当前商店信息
             currentStoreData: {},

@@ -94,7 +94,6 @@ const useShowCartEffect = () => {
     //切换购物车是否展示详情内容
     let isShowCart = ref(false)
     const changeshowCart = () => {
-        console.log('22222222222222222')
         isShowCart.value = !isShowCart.value
     }
     const closeShowCart = (e) => {

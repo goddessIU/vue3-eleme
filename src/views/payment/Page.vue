@@ -6,7 +6,7 @@
     <div class="paymentWay">
         <div class="paymentWay__title">支付方式</div>
         <div class="paymentWay__ways">
-            <div class="paymentWay__way" @click="changeWay">
+            <div class="paymentWay__way" @click="changeWay(0)">
                 <span>
                     <svg class="icon" aria-hidden="true">
                         <use xlink:href="#icon-zhifubao" />
@@ -23,7 +23,7 @@
                     </svg>
                 </span>
             </div>
-            <div class="paymentWay__way" @click="changeWay">
+            <div class="paymentWay__way" @click="changeWay(1)">
                 <span>
                     <svg class="icon" aria-hidden="true">
                         <use xlink:href="#icon-weixin" />
@@ -115,12 +115,8 @@ const router = useRouter()
 //选择哪种付费方式的逻辑
 const useChooseWayEffect = () => {
     let chooseWay = ref(0)
-    const changeWay = () => {
-        if (chooseWay.value === 0) {
-            chooseWay.value = 1
-        } else {
-            chooseWay.value = 0
-        }
+    const changeWay = (index) => {
+        chooseWay.value = index
     }
 
     return {
